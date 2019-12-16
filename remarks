@@ -1,3 +1,4 @@
+// header
 image 
 job title
 company name
@@ -5,13 +6,26 @@ location
 salary
 full-time/part-time
 time posted
+
+// buttons
 btn1 btn2
 
+// job Info
 job description
 
 qualifications
 
 perks and benefits
+(
+    Flexitime
+    Paid Holidays
+    Paid Sick Leave
+    Housing
+    Work from Home
+    Paid Vacation Leave
+    Medical / Health Insurance
+    Free Lunch or Snacks
+)
 
 job summary
     job level
