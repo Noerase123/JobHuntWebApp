@@ -6,7 +6,7 @@ const educ = new Schema({
     educationAttained: {type:String},
     course: {type:String},
     school: {type:String},
-    fromYear: {type:Date},
+    fromYear: {type:Number},
     graduated: {type:Boolean},
     description: {type:String}
 })

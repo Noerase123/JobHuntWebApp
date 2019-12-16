@@ -7,6 +7,7 @@ router.get('/', ESController.viewAll);
 router.get('/:applicantID/', ESController.viewbyapplicantId);
 router.post('/:applicantID/', ESController.addES);
 router.delete(':applicantID/', ESController.deleteES);
+router.delete('/deleteID/:id', ESController.deleteESbyID);
 router.patch('/:applicantID/', ESController.updateSalary);
 
 module.exports = router;

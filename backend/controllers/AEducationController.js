@@ -15,7 +15,7 @@ module.exports.viewAll = async (req, res, next) => {
 
 module.exports.viewbyId = async (req, res, next) => {
     const id = req.params.applicantID
-    const getbyId = await educationModel.findById(id)
+    const getbyId = await educationModel.find({applicantId: id})
     try {
         res.status(200).json(getbyId)
     } catch (err) {
@@ -48,7 +48,7 @@ module.exports.addEduc = async (req, res, next) => {
 module.exports.deleteEduc = async (req, res, next) => {
     const id = req.params.applicantID
 
-    await educationModel.deleteOne({ applicantId: id })
+    await educationModel.deleteMany({ applicantId: id })
     try {
         res.status(200).json({
             message: `${id} educationModel deleted`

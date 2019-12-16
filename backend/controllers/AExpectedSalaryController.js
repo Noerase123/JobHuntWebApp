@@ -16,7 +16,7 @@ module.exports.viewAll = async (req, res, next) => {
 
 module.exports.viewbyapplicantId = async (req, res, next) => {
     const applicantID = req.params.applicantID
-    const getbyId = await ExpectedSalary.findById(applicantID)
+    const getbyId = await ExpectedSalary.find({applicantId: applicantID})
     try {
         res.status(200).json(getbyId)
     } catch (err) {
@@ -47,7 +47,21 @@ module.exports.addES = async (req, res, next) => {
 module.exports.deleteES = async (req, res, next) => {
     const id = req.params.applicantID
 
-    await ExpectedSalary.deleteOne({ applicantId: id })
+    await ExpectedSalary.deleteMany({ applicantId: id })
+    try {
+        res.status(200).json({
+            message: `${id} expectedSalary deleted`
+        })
+    } catch (err) {
+        res.status(500).json(err)
+        console.log(err)
+    }
+}
+
+module.exports.deleteESbyID = async (req, res, next) => {
+    const id = req.params.id
+
+    await ExpectedSalary.deleteOne({ _id: id })
     try {
         res.status(200).json({
             message: `${id} expectedSalary deleted`

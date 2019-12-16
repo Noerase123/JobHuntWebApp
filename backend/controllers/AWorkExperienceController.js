@@ -15,7 +15,7 @@ module.exports.viewAll = async (req, res, next) => {
 
 module.exports.viewbyId = async (req, res, next) => {
     const id = req.params.applicantID
-    const getbyid = await AWorkExperienceModel.findById(id)
+    const getbyid = await AWorkExperienceModel.find({applicantId:id})
     try {
         res.status(200).json(getbyid)
     } catch (err) {
@@ -37,7 +37,7 @@ module.exports.addWE = async (req, res, next) => {
 
     await addWork.save()
     try {
-        res.status(200).json({
+        res.status(201).json({
             message: 'Work Experience added'
         })
     } catch (err) {
@@ -48,7 +48,7 @@ module.exports.addWE = async (req, res, next) => {
 
 module.exports.deleteWE = async (req, res, next) => {
     const id = req.params.applicantID
-    await AWorkExperienceModel.deleteOne({ applicantId: id })
+    await AWorkExperienceModel.deleteMany({ applicantId: id })
     try {
         res.status(200).json({
             message: 'Work experience has been removed'

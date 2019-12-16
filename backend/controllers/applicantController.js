@@ -1,10 +1,53 @@
 const mongoose = require('mongoose')
 const ApplicantModel = require('../models/applicantModel')
+const AES = require('../models/AExpectedSalaryModel')
+const AWE = require('../models/AWorkExperienceModel')
+const AE = require('../models/AEducationModel')
 
-module.exports.viewAll = async (req, res, next) => {
-    const getAll = await ApplicantModel.find()
+let apiUrl = 'http://localhost:3000/api/applicant/emp/'
+
+module.exports.viewEmployee = async (req, res, next) => {
+    const id = req.params.applicantID
+
+    const app = await ApplicantModel.findById(id, { __v: 0 })
+    const exp = await AES.findOne({ applicantId: id }, { _id: 0, __v: 0, applicantId: 0 })
+    const work = await AWE.find({ applicantId: id }, { _id: 0, __v: 0, applicantId: 0 })
+    const educ = await AE.find({ applicantId: id }, { _id: 0, __v: 0, applicantId: 0 })
 
     try {
+        res.status(200).json({
+
+            applicant: {
+                basicInfo: app,
+                expectedSalary: exp || 'No data',
+                workExp: work || 'No data',
+                education: educ || 'No data'
+            }
+        })
+    } catch (err) {
+        res.status(500).json({ error: err })
+    }
+}
+
+module.exports.viewAll = async (req, res, next) => {
+    const All = await ApplicantModel.find({}, { __v: 0 })
+
+    try {
+        const getAll = All.map(app => {
+            return {
+                info: {
+                    _id: app._id,
+                    firstname: app.firstname,
+                    lastname: app.lastname,
+                    location: app.location,
+                    contactNo: app.contactNo,
+                    email: app.email,
+                    birthday: app.birthday,
+                    gender: app.gender
+                },
+                source: apiUrl + app._id
+            }
+        })
         res.status(200).json({
             data: getAll
         })
