@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const AWorkExperienceModel = require('../models/AWorkExperienceModel')
 
-module.exports.viewAll = async (req, res, next) => {
+exports.viewAll = async (req, res, next) => {
     const getAll = await AWorkExperienceModel.find()
     try {
         res.status(200).json({
@@ -13,7 +13,7 @@ module.exports.viewAll = async (req, res, next) => {
     }
 }
 
-module.exports.viewbyId = async (req, res, next) => {
+exports.viewbyId = async (req, res, next) => {
     const id = req.params.applicantID
     const getbyid = await AWorkExperienceModel.find({applicantId:id})
     try {
@@ -24,7 +24,7 @@ module.exports.viewbyId = async (req, res, next) => {
     }
 }
 
-module.exports.addWE = async (req, res, next) => {
+exports.addWE = async (req, res, next) => {
     const addWork = new AWorkExperienceModel({
         applicantId: req.params.applicantID,
         jobTitle: req.body.jobTitle,
@@ -46,7 +46,7 @@ module.exports.addWE = async (req, res, next) => {
     }
 }
 
-module.exports.deleteWE = async (req, res, next) => {
+exports.deleteWE = async (req, res, next) => {
     const id = req.params.applicantID
     await AWorkExperienceModel.deleteMany({ applicantId: id })
     try {
@@ -59,7 +59,7 @@ module.exports.deleteWE = async (req, res, next) => {
     }
 }
 
-module.exports.updateWE = async (req, res, next) => {
+exports.updateWE = async (req, res, next) => {
     const id = req.params.applicantID
     const updateOps = {}
     for (const ops of req.body) {

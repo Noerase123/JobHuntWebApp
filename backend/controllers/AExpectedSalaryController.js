@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const ExpectedSalary = require('../models/AExpectedSalaryModel')
 
-module.exports.viewAll = async (req, res, next) => {
+exports.viewAll = async (req, res, next) => {
 
     const getAll = await ExpectedSalary.find()
     try {
@@ -14,7 +14,7 @@ module.exports.viewAll = async (req, res, next) => {
     }
 }
 
-module.exports.viewbyapplicantId = async (req, res, next) => {
+exports.viewbyapplicantId = async (req, res, next) => {
     const applicantID = req.params.applicantID
     const getbyId = await ExpectedSalary.find({applicantId: applicantID})
     try {
@@ -25,7 +25,7 @@ module.exports.viewbyapplicantId = async (req, res, next) => {
     }
 }
 
-module.exports.addES = async (req, res, next) => {
+exports.addES = async (req, res, next) => {
     const ES = new ExpectedSalary({
         applicantId: req.params.applicantID,
         minimum: req.body.minimum,
@@ -44,7 +44,7 @@ module.exports.addES = async (req, res, next) => {
     }
 }
 
-module.exports.deleteES = async (req, res, next) => {
+exports.deleteES = async (req, res, next) => {
     const id = req.params.applicantID
 
     await ExpectedSalary.deleteMany({ applicantId: id })
@@ -58,7 +58,7 @@ module.exports.deleteES = async (req, res, next) => {
     }
 }
 
-module.exports.deleteESbyID = async (req, res, next) => {
+exports.deleteESbyID = async (req, res, next) => {
     const id = req.params.id
 
     await ExpectedSalary.deleteOne({ _id: id })
@@ -72,7 +72,7 @@ module.exports.deleteESbyID = async (req, res, next) => {
     }
 }
 
-module.exports.updateSalary = async (req, res, next) => {
+exports.updateSalary = async (req, res, next) => {
     const id = req.params.applicantID
     const updateOps = {}
     for (const ops of req.body) {

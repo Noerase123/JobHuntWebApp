@@ -6,7 +6,7 @@ const AE = require('../models/AEducationModel')
 
 let apiUrl = 'http://localhost:3000/api/applicant/emp/'
 
-module.exports.viewEmployee = async (req, res, next) => {
+exports.viewEmployee = async (req, res, next) => {
     const id = req.params.applicantID
 
     const app = await ApplicantModel.findById(id, { __v: 0 })
@@ -29,7 +29,7 @@ module.exports.viewEmployee = async (req, res, next) => {
     }
 }
 
-module.exports.viewAll = async (req, res, next) => {
+exports.viewAll = async (req, res, next) => {
     const All = await ApplicantModel.find({}, { __v: 0 })
 
     try {
@@ -58,7 +58,7 @@ module.exports.viewAll = async (req, res, next) => {
 
 }
 
-module.exports.viewbyId = async (req, res, next) => {
+exports.viewbyId = async (req, res, next) => {
     const id = req.params.id
     const getbyId = await ApplicantModel.findById(id)
 
@@ -70,7 +70,7 @@ module.exports.viewbyId = async (req, res, next) => {
     }
 }
 
-module.exports.addApplicant = async (req, res, next) => {
+exports.addApplicant = async (req, res, next) => {
     const appli = new ApplicantModel({
         firstname: req.body.firstname,
         lastname: req.body.lastname,
@@ -92,7 +92,7 @@ module.exports.addApplicant = async (req, res, next) => {
     }
 }
 
-module.exports.updateApplicant = async (req, res, next) => {
+exports.updateApplicant = async (req, res, next) => {
     const id = req.params.id
     const updateOps = {}
     for (const ops of req.body) {
@@ -109,7 +109,7 @@ module.exports.updateApplicant = async (req, res, next) => {
     }
 }
 
-module.exports.deleteApplicant = async (req, res, next) => {
+exports.deleteApplicant = async (req, res, next) => {
     const id = req.params.id
     await ApplicantModel.deleteOne({ _id: id })
     try {

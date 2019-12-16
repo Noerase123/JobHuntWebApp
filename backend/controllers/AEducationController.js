@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const educationModel = require('../models/AEducationModel')
 
-module.exports.viewAll = async (req, res, next) => {
+exports.viewAll = async (req, res, next) => {
     const getAll = await educationModel.find()
     try {
         res.status(200).json({
@@ -13,7 +13,7 @@ module.exports.viewAll = async (req, res, next) => {
     }
 }
 
-module.exports.viewbyId = async (req, res, next) => {
+exports.viewbyId = async (req, res, next) => {
     const id = req.params.applicantID
     const getbyId = await educationModel.find({applicantId: id})
     try {
@@ -24,7 +24,7 @@ module.exports.viewbyId = async (req, res, next) => {
     }
 }
 
-module.exports.addEduc = async (req, res, next) => {
+exports.addEduc = async (req, res, next) => {
     const ES = new educationModel({
         applicantId: req.params.applicantID,
         educationAttained: req.body.educationAttained,
@@ -45,7 +45,7 @@ module.exports.addEduc = async (req, res, next) => {
     }
 }
 
-module.exports.deleteEduc = async (req, res, next) => {
+exports.deleteEduc = async (req, res, next) => {
     const id = req.params.applicantID
 
     await educationModel.deleteMany({ applicantId: id })
@@ -59,7 +59,7 @@ module.exports.deleteEduc = async (req, res, next) => {
     }
 }
 
-module.exports.updateEduc = async (req, res, next) => {
+exports.updateEduc = async (req, res, next) => {
     const id = req.params.applicantID
     const updateOps = {}
     for (const ops of req.body) {
