@@ -4,6 +4,8 @@ const JobInfoModel = require('../models/JobInfoModel')
 const JobBenefits = require('../models/JobBenefitsModel')
 const JobSummary = require('../models/JobSummaryModel')
 
+let apiUrl = 'http://localhost:3000/api/job/all/'
+
 exports.viewJobs = async (req, res, next) => {
     const id = req.params.jobid
     
@@ -41,8 +43,22 @@ exports.viewAll = async (req, res, next) => {
     const All = await JobHeaderModel.find({}, { __v: 0 })
 
     try {
+        const getall = All.map(job => {
+            return {
+                id: job._id,
+                jobInfo: {
+                    jobTitle: job.jobTitle,
+                    company: job.company,
+                    location: job.location,
+                    salary: job.salary,
+                    fullTime: job.fullTime,
+                    datePosted: job.datePosted
+                },
+                source: apiUrl + job._id
+            }
+        })
         res.status(200).json({
-            data: All
+            data: getall,
         })
     } catch (err) {
         res.status(500).json({ error: err })
