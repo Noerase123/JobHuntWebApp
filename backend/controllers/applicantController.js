@@ -14,11 +14,23 @@ exports.viewEmployee = async (req, res, next) => {
     const work = await AWE.find({ applicantId: id }, { _id: 0, __v: 0, applicantId: 0 })
     const educ = await AE.find({ applicantId: id }, { _id: 0, __v: 0, applicantId: 0 })
 
+
+    const person = {
+        firstname: app.firstname,
+        lastname: app.lastname,
+        location: app.location,
+        contactNo: app.contactNo,
+        email: app.email,
+        birthday: app.birthday,
+        gender: app.gender
+    }
+
     try {
         res.status(200).json({
 
             applicant: {
-                basicInfo: app,
+                id: app._id,
+                basicInfo: person,
                 expectedSalary: exp || 'No data',
                 workExp: work || 'No data',
                 education: educ || 'No data'

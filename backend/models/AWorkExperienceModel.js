@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const workExp = new Schema({
-    applicantId: {type:String},
+    applicantId: {type:String, required: true},
     jobTitle: {type:String},
     company: {type:String},
     from: {type:Date},

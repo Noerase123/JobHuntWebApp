@@ -1,5 +1,41 @@
 const mongoose = require('mongoose')
 const JobHeaderModel = require('../models/JobHeaderModel')
+const JobInfoModel = require('../models/JobInfoModel')
+const JobBenefits = require('../models/JobBenefitsModel')
+const JobSummary = require('../models/JobSummaryModel')
+
+exports.viewJobs = async (req, res, next) => {
+    const id = req.params.jobid
+    
+    const header = await JobHeaderModel.findById(id,{__v:0})
+    const info = await JobInfoModel.findOne({jobId: id}, {__v: 0, _id: 0, jobId: 0})
+    const benefits = await JobBenefits.findOne({jobId: id}, {__v: 0, _id: 0, jobId: 0})
+    const summary = await JobSummary.findOne({jobId: id}, {__v: 0, _id: 0, jobId: 0})
+
+    const head = {
+        datePosted: header.datePosted,
+        jobTitle: header.jobTitle,
+        company: header.company,
+        location: header.location,
+        salary: header.salary,
+        fullTime: header.fullTime
+    }
+
+    try {
+        res.status(200).json({
+            Job: {
+                id: header._id,
+                header: head,
+                JobInfo: info,
+                JobBenefits: benefits,
+                JobSummary: summary
+            }
+        })
+    } catch (err) {
+        res.status(500).json(err)
+    }
+    
+}
 
 exports.viewAll = async (req, res, next) => {
     const All = await JobHeaderModel.find({}, { __v: 0 })

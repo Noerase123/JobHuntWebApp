@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const expectedSalary = new Schema({
-    applicantId: {type:String},
+    applicantId: {type:String, required: true},
     minimum: {type:Number},
     maximum: {type:Number},
     currency: {type:String},

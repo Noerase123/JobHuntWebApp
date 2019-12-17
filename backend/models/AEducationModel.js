@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const educ = new Schema({
-    applicantId: {type:String},
+    applicantId: {type:String, required: true},
     educationAttained: {type:String},
     course: {type:String},
     school: {type:String},
