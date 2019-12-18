@@ -4,8 +4,7 @@ const jobSummaryController = require('../controllers/JobSummaryController')
 
 /* GET users listing. */
 router.get('/', jobSummaryController.viewAll);
-router.get('/:id', jobSummaryController.viewbyId);
-router.get('/jobid/:jobid', jobSummaryController.viewByJobID);
+router.get('/:jobid', jobSummaryController.viewByJobID);
 router.post('/:jobid', jobSummaryController.addJobSummary);
 router.patch('/:jobid', jobSummaryController.updateJobSummary);
 router.delete('/:jobid', jobSummaryController.deleteJobSummary);

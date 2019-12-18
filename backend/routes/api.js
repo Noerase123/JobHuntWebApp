@@ -10,6 +10,7 @@ const jobHeader = require('./jobHeader')
 const jobInfo = require('./jobInfo')
 const jobBenefits = require('./jobBenefits')
 const jobSummary = require('./jobSummary')
+const company = require('./companyOverview')
 
 router.use('/applicant', applicant);
 router.use('/expectedSalary', expectedS);
@@ -20,5 +21,6 @@ router.use('/job', jobHeader);
 router.use('/jobInfo', jobInfo);
 router.use('/jobBenefits', jobBenefits);
 router.use('/jobSummary', jobSummary);
+router.use('/company', company);
 
 module.exports = router;

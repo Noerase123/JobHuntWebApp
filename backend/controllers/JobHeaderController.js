@@ -3,6 +3,7 @@ const JobHeaderModel = require('../models/JobHeaderModel')
 const JobInfoModel = require('../models/JobInfoModel')
 const JobBenefits = require('../models/JobBenefitsModel')
 const JobSummary = require('../models/JobSummaryModel')
+const Company = require('../models/CompanyOverviewModel')
 
 let apiUrl = 'http://localhost:3000/api/job/all/'
 
@@ -13,6 +14,7 @@ exports.viewJobs = async (req, res, next) => {
     const info = await JobInfoModel.findOne({jobId: id}, {__v: 0, _id: 0, jobId: 0})
     const benefits = await JobBenefits.findOne({jobId: id}, {__v: 0, _id: 0, jobId: 0})
     const summary = await JobSummary.findOne({jobId: id}, {__v: 0, _id: 0, jobId: 0})
+    const company = await Company.findOne({jobId: id}, {__v: 0, _id: 0, jobId: 0})
 
     const head = {
         datePosted: header.datePosted,
@@ -30,7 +32,8 @@ exports.viewJobs = async (req, res, next) => {
                 header: head,
                 JobInfo: info,
                 JobBenefits: benefits,
-                JobSummary: summary
+                JobSummary: summary,
+                AboutCompany: company
             }
         })
     } catch (err) {

@@ -15,18 +15,6 @@ exports.viewAll = async (req, res, next) => {
 
 }
 
-exports.viewbyId = async (req, res, next) => {
-    const id = req.params.id
-    const getbyId = await JobBenefitModel.findById(id)
-
-    try {
-        res.status(200).json(getbyId)
-    } catch (err) {
-        res.status(500).json({ error: err })
-        console.log(JSON.parse(err))
-    }
-}
-
 exports.viewByJobID = async (req, res, next) => {
     const jobid = req.params.jobid
     const getJobid = await JobBenefitModel.find({ jobId: jobid })
