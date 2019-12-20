@@ -1,13 +1,14 @@
 var express = require('express');
 var router = express.Router();
 const ESController = require('../controllers/AExpectedSalaryController')
+const auth = require('../middleware/Auth')
 
 /* GET users listing. */
-router.get('/', ESController.viewAll);
-router.get('/:applicantID/', ESController.viewbyapplicantId);
-router.post('/:applicantID/', ESController.addES);
-router.delete(':applicantID/', ESController.deleteES);
-router.delete('/deleteID/:id', ESController.deleteESbyID);
-router.patch('/:applicantID/', ESController.updateSalary);
+router.get('/', auth, ESController.viewAll);
+router.get('/:applicantID/', auth, ESController.viewbyapplicantId);
+router.post('/:applicantID/', auth, ESController.addES);
+router.delete(':applicantID/', auth, ESController.deleteES);
+router.delete('/deleteID/:id', auth, ESController.deleteESbyID);
+router.patch('/:applicantID/', auth, ESController.updateSalary);
 
 module.exports = router;

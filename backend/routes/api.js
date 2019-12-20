@@ -11,7 +11,9 @@ const jobInfo = require('./jobInfo')
 const jobBenefits = require('./jobBenefits')
 const jobSummary = require('./jobSummary')
 const company = require('./companyOverview')
+const users = require('./users')
 
+router.use('/user', users);
 router.use('/applicant', applicant);
 router.use('/expectedSalary', expectedS);
 router.use('/workExperience', workE);

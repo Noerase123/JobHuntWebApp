@@ -3,6 +3,7 @@ const ApplicantModel = require('../models/applicantModel')
 const AES = require('../models/AExpectedSalaryModel')
 const AWE = require('../models/AWorkExperienceModel')
 const AE = require('../models/AEducationModel')
+const User = require('../models/userModel')
 
 let apiUrl = 'http://localhost:3000/api/applicant/emp/'
 
@@ -49,6 +50,7 @@ exports.viewAll = async (req, res, next) => {
             return {
                 info: {
                     _id: app._id,
+                    userID: app.userId,
                     firstname: app.firstname,
                     lastname: app.lastname,
                     location: app.location,
@@ -72,7 +74,7 @@ exports.viewAll = async (req, res, next) => {
 
 exports.viewbyId = async (req, res, next) => {
     const id = req.params.id
-    const getbyId = await ApplicantModel.findById(id)
+    const getbyId = await ApplicantModel.find({userId:id})
 
     try {
         res.status(200).json(getbyId)
@@ -83,12 +85,19 @@ exports.viewbyId = async (req, res, next) => {
 }
 
 exports.addApplicant = async (req, res, next) => {
+    const userID = req.params.userID
+
+    const email = await User.findById(userID)
+
+    console.log(email.username)
+
     const appli = new ApplicantModel({
+        userId: userID,
         firstname: req.body.firstname,
         lastname: req.body.lastname,
         location: req.body.location,
         contactNo: req.body.contactNo,
-        email: req.body.email,
+        email: email.username,
         birthday: req.body.birthday,
         gender: req.body.gender
     })

@@ -1,12 +1,13 @@
 var express = require('express');
 var router = express.Router();
 const educationController = require('../controllers/AEducationController')
+const auth = require('../middleware/Auth')
 
 /* GET users listing. */
-router.get('/', educationController.viewAll);
-router.get('/:applicantID', educationController.viewbyId);
-router.post('/:applicantID', educationController.addEduc);
-router.patch('/:applicantID', educationController.updateEduc);
-router.delete('/:applicantID', educationController.deleteEduc);
+router.get('/', auth, educationController.viewAll);
+router.get('/:applicantID', auth, educationController.viewbyId);
+router.post('/:applicantID', auth, educationController.addEduc);
+router.patch('/:applicantID', auth, educationController.updateEduc);
+router.delete('/:applicantID', auth, educationController.deleteEduc);
 
 module.exports = router;
