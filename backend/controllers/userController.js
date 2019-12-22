@@ -11,19 +11,6 @@ exports.login = async (req, res, next) => {
 
     const applicant = await Applicant.find({ userId: user[0]._id })
 
-    // var options = {
-    //     url: 'https://ipinfo.io/ip',
-    //     method: 'GET'
-    // };
-    
-    // function callback(error, response, body) {
-    //     if (!error && response.statusCode == 200) {
-    //         console.log(body);
-    //     }
-    // }
-    
-    // const ip = request(options, callback);
-
     try {
         if (user.length < 1) {
             return res.status(401).json({
@@ -50,7 +37,6 @@ exports.login = async (req, res, next) => {
                 return res.status(200).json({
                     message: 'Auth login',
                     token: token,
-                    ip: ip.address()
                 })
             }
             return res.status(401).json({

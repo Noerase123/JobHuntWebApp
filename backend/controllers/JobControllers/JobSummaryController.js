@@ -1,8 +1,8 @@
 const mongoose = require('mongoose')
-const JobBenefitModel = require('../models/JobBenefitsModel')
+const JobSummaryModel = require('../../models/JobSummaryModel')
 
 exports.viewAll = async (req, res, next) => {
-    const All = await JobBenefitModel.find({}, { __v: 0 })
+    const All = await JobSummaryModel.find({}, { __v: 0 })
 
     try {
         res.status(200).json({
@@ -17,7 +17,7 @@ exports.viewAll = async (req, res, next) => {
 
 exports.viewByJobID = async (req, res, next) => {
     const jobid = req.params.jobid
-    const getJobid = await JobBenefitModel.find({ jobId: jobid })
+    const getJobid = await JobSummaryModel.findOne({ jobId: jobid })
 
     try {
         res.status(200).json(getJobid)
@@ -27,23 +27,24 @@ exports.viewByJobID = async (req, res, next) => {
     }
 }
 
-exports.addJobBenefits = async (req, res, next) => {
-    const appli = new JobBenefitModel({
+exports.addJobSummary = async (req, res, next) => {
+    
+    const appli = new JobSummaryModel({
         jobId: req.params.jobid,
-        flexitime: req.body.flexitime,
-        paidHolidays: req.body.paidHolidays,
-        paidSickLeave: req.body.paidSickLeave,
-        housing: req.body.Housing,
-        workFromHome: req.body.workFromHome,
-        paidVacationLeave: req.body.paidVacationLeave,
-        medicalInsurance: req.body.medicalInsurance,
-        freeLunch: req.body.freeLunch
+        jobLevel: req.body.jobLevel,
+        industry: req.body.industry,
+        jobCategory: req.body.jobCategory,
+        vacancy: req.body.vacancy,
+        education: req.body.education,
+        website: req.body.website,
+        responseAccuracy: req.body.responseAccuracy,
+        officeAddress: req.body.officeAddress
     })
 
     await appli.save()
     try {
         res.status(201).json({
-            message: 'Job Benefits added'
+            message: 'Job Summary added'
         })
     } catch (err) {
         res.status(500).json(err)
@@ -51,16 +52,16 @@ exports.addJobBenefits = async (req, res, next) => {
     }
 }
 
-exports.updateJobBenefits = async (req, res, next) => {
+exports.updateJobSummary = async (req, res, next) => {
     const id = req.params.jobid
     const updateOps = {}
     for (const ops of req.body) {
         updateOps[ops.propName] = ops.value
     }
-    await JobBenefitModel.update({ jobId: id }, { $set: updateOps })
+    await JobSummaryModel.update({ jobId: id }, { $set: updateOps })
     try {
         res.status(200).json({
-            message: 'Job Benefits updated'
+            message: 'Job Summary updated'
         })
     } catch (err) {
         res.status(500).json(err)
@@ -68,12 +69,12 @@ exports.updateJobBenefits = async (req, res, next) => {
     }
 }
 
-exports.deleteJobBenefits = async (req, res, next) => {
+exports.deleteJobSummary = async (req, res, next) => {
     const id = req.params.jobid
-    await JobBenefitModel.deleteOne({ jobId: id })
+    await JobSummaryModel.deleteOne({ jobId: id })
     try {
         res.status(200).json({
-            message: `(${id}) Job Benefits deleted`
+            message: `(${id}) Job Summary deleted`
         })
     }
     catch (err) {

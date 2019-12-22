@@ -1,16 +1,16 @@
 var express = require('express');
 var router = express.Router();
 
-const applicant = require('./applicant')
-const expectedS = require('./expectedS')
-const workE     = require('./workexperience')
-const education = require('./education')
+const applicant = require('./applicantRoutes/applicant')
+const expectedS = require('./applicantRoutes/expectedS')
+const workE     = require('./applicantRoutes/workexperience')
+const education = require('./applicantRoutes/education')
 
-const jobHeader = require('./jobHeader')
-const jobInfo = require('./jobInfo')
-const jobBenefits = require('./jobBenefits')
-const jobSummary = require('./jobSummary')
-const company = require('./companyOverview')
+const jobHeader = require('./jobRoutes/jobHeader')
+const jobInfo = require('./jobRoutes/jobInfo')
+const jobBenefits = require('./jobRoutes/jobBenefits')
+const jobSummary = require('./jobRoutes/jobSummary')
+const company = require('./jobRoutes/companyOverview')
 const users = require('./users')
 
 router.use('/user', users);

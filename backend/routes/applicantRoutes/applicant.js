@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
-const applicantController = require('../controllers/applicantController')
-const auth = require('../middleware/Auth')
+const applicantController = require('../../controllers/ApplicantControllers/applicantController')
+const auth = require('../../middleware/Auth')
 
 /* GET users listing. */
 router.get('/', auth, applicantController.viewAll);

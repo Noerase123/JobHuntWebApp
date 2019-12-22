@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
-const ESController = require('../controllers/AExpectedSalaryController')
-const auth = require('../middleware/Auth')
+const ESController = require('../../controllers/ApplicantControllers/AExpectedSalaryController')
+const auth = require('../../middleware/Auth')
 
 /* GET users listing. */
 router.get('/', auth, ESController.viewAll);

@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-const jobSummaryController = require('../controllers/JobSummaryController')
+const jobSummaryController = require('../../controllers/JobControllers/JobSummaryController')
 
 /* GET users listing. */
 router.get('/', jobSummaryController.viewAll);

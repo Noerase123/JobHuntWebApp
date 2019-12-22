@@ -1,9 +1,9 @@
 const mongoose = require('mongoose')
-const JobHeaderModel = require('../models/JobHeaderModel')
-const JobInfoModel = require('../models/JobInfoModel')
-const JobBenefits = require('../models/JobBenefitsModel')
-const JobSummary = require('../models/JobSummaryModel')
-const Company = require('../models/CompanyOverviewModel')
+const JobHeaderModel = require('../../models/JobHeaderModel')
+const JobInfoModel = require('../../models/JobInfoModel')
+const JobBenefits = require('../../models/JobBenefitsModel')
+const JobSummary = require('../../models/JobSummaryModel')
+const Company = require('../../models/CompanyOverviewModel')
 
 let apiUrl = 'http://localhost:3000/api/job/all/'
 

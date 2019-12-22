@@ -1,8 +1,8 @@
 const mongoose = require('mongoose')
-const educationModel = require('../models/AEducationModel')
+const AWorkExperienceModel = require('../../models/AWorkExperienceModel')
 
 exports.viewAll = async (req, res, next) => {
-    const getAll = await educationModel.find()
+    const getAll = await AWorkExperienceModel.find()
     try {
         res.status(200).json({
             data: getAll
@@ -15,29 +15,30 @@ exports.viewAll = async (req, res, next) => {
 
 exports.viewbyId = async (req, res, next) => {
     const id = req.params.applicantID
-    const getbyId = await educationModel.find({applicantId: id})
+    const getbyid = await AWorkExperienceModel.find({applicantId:id})
     try {
-        res.status(200).json(getbyId)
+        res.status(200).json(getbyid)
     } catch (err) {
         res.status(500).json(err)
         console.log(err)
     }
 }
 
-exports.addEduc = async (req, res, next) => {
-    const ES = new educationModel({
+exports.addWE = async (req, res, next) => {
+    const addWork = new AWorkExperienceModel({
         applicantId: req.params.applicantID,
-        educationAttained: req.body.educationAttained,
-        course: req.body.course,
-        school: req.body.school,
-        fromYear: req.body.fromYear,
-        graduated: req.body.graduated,
+        jobTitle: req.body.jobTitle,
+        company: req.body.company,
+        from: req.body.from,
+        to: req.body.to,
+        current: req.body.current,
         description: req.body.description
     })
-    await ES.save()
+
+    await addWork.save()
     try {
         res.status(201).json({
-            message: `education added to ${res.applicantId}`
+            message: 'Work Experience added'
         })
     } catch (err) {
         res.status(500).json(err)
@@ -45,13 +46,12 @@ exports.addEduc = async (req, res, next) => {
     }
 }
 
-exports.deleteEduc = async (req, res, next) => {
+exports.deleteWE = async (req, res, next) => {
     const id = req.params.applicantID
-
-    await educationModel.deleteMany({ applicantId: id })
+    await AWorkExperienceModel.deleteMany({ applicantId: id })
     try {
         res.status(200).json({
-            message: `${id} educationModel deleted`
+            message: 'Work experience has been removed'
         })
     } catch (err) {
         res.status(500).json(err)
@@ -59,16 +59,16 @@ exports.deleteEduc = async (req, res, next) => {
     }
 }
 
-exports.updateEduc = async (req, res, next) => {
+exports.updateWE = async (req, res, next) => {
     const id = req.params.applicantID
     const updateOps = {}
     for (const ops of req.body) {
         updateOps[ops.propName] = ops.value
     }
-    await educationModel.update({ applicantId: id }, { $set: updateOps })
+    await AWorkExperienceModel.update({ applicantId: id }, { $set: updateOps })
     try {
         res.status(200).json({
-            message: 'Expected salary'
+            message: 'work experience updated'
         })
     } catch (err) {
         res.status(500).json(err)

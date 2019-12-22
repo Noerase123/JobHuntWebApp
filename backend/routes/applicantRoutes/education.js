@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
-const educationController = require('../controllers/AEducationController')
-const auth = require('../middleware/Auth')
+const educationController = require('../../controllers/ApplicantControllers/AEducationController')
+const auth = require('../../middleware/Auth')
 
 /* GET users listing. */
 router.get('/', auth, educationController.viewAll);

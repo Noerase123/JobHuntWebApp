@@ -1,8 +1,8 @@
 const mongoose = require('mongoose')
-const CompanyOverviewModel = require('../models/CompanyOverviewModel')
+const JobInfoModel = require('../../models/JobInfoModel')
 
 exports.viewAll = async (req, res, next) => {
-    const All = await CompanyOverviewModel.find({}, { __v: 0 })
+    const All = await JobInfoModel.find({}, { __v: 0 })
 
     try {
         res.status(200).json({
@@ -15,9 +15,9 @@ exports.viewAll = async (req, res, next) => {
 
 }
 
-exports.viewByJobID = async (req, res, next) => {
+exports.viewByJobID = async (req,res,next) => {
     const jobid = req.params.jobid
-    const getJobid = await CompanyOverviewModel.find({ jobId: jobid })
+    const getJobid = await JobInfoModel.find({jobId: jobid})
 
     try {
         res.status(200).json(getJobid)
@@ -27,17 +27,17 @@ exports.viewByJobID = async (req, res, next) => {
     }
 }
 
-exports.addComOverview = async (req, res, next) => {
-    const appli = new CompanyOverviewModel({
+exports.addJobInfo = async (req, res, next) => {
+    const appli = new JobInfoModel({
         jobId: req.params.jobid,
-        overview: req.body.overview,
-        yearStarted: req.body.yearStarted
+        jobDescription: req.body.jobDescription,
+        qualification: req.body.qualification
     })
 
     await appli.save()
     try {
         res.status(201).json({
-            message: 'Company Overview added'
+            message: 'Job Info added'
         })
     } catch (err) {
         res.status(500).json(err)
@@ -45,16 +45,16 @@ exports.addComOverview = async (req, res, next) => {
     }
 }
 
-exports.updateComOverview = async (req, res, next) => {
+exports.updateJobInfo = async (req, res, next) => {
     const id = req.params.jobid
     const updateOps = {}
     for (const ops of req.body) {
         updateOps[ops.propName] = ops.value
     }
-    await CompanyOverviewModel.update({ jobId: id }, { $set: updateOps })
+    await JobInfoModel.update({ jobId: id }, { $set: updateOps })
     try {
         res.status(200).json({
-            message: 'Company Overview updated'
+            message: 'Job Info updated'
         })
     } catch (err) {
         res.status(500).json(err)
@@ -62,12 +62,12 @@ exports.updateComOverview = async (req, res, next) => {
     }
 }
 
-exports.deleteComOverview = async (req, res, next) => {
+exports.deleteJobInfo = async (req, res, next) => {
     const id = req.params.jobid
-    await CompanyOverviewModel.deleteOne({ jobId: id })
+    await JobInfoModel.deleteOne({ jobId: id })
     try {
         res.status(200).json({
-            message: `(${id}) Company Overview deleted`
+            message: `(${id}) Job Info deleted`
         })
     }
     catch (err) {

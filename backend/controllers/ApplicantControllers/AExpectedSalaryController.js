@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const ExpectedSalary = require('../models/AExpectedSalaryModel')
+const ExpectedSalary = require('../../models/AExpectedSalaryModel')
 
 exports.viewAll = async (req, res, next) => {
 

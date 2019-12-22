@@ -1,9 +1,9 @@
 const mongoose = require('mongoose')
-const ApplicantModel = require('../models/applicantModel')
-const AES = require('../models/AExpectedSalaryModel')
-const AWE = require('../models/AWorkExperienceModel')
-const AE = require('../models/AEducationModel')
-const User = require('../models/userModel')
+const ApplicantModel = require('../../models/applicantModel')
+const AES = require('../../models/AExpectedSalaryModel')
+const AWE = require('../../models/AWorkExperienceModel')
+const AE = require('../../models/AEducationModel')
+const User = require('../../models/userModel')
 
 let apiUrl = 'http://localhost:3000/api/applicant/emp/'
 
