@@ -1,4 +1,5 @@
 import React from 'react';
+import Router, { withRouter } from 'next/router'
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -19,10 +20,9 @@ const useStyles = makeStyles({
 export default function ComJob() {
   const classes = useStyles();
   const [job, setJob] = React.useState([])
+  const apiUrl = 'http://localhost:3030/api/'
 
   React.useEffect(() => {
-    const apiUrl = 'http://localhost:3030/api/'
-
     Axios.get(apiUrl + 'job')
       .then(res => {
         console.log(res.data.data)
@@ -33,11 +33,15 @@ export default function ComJob() {
       })
   }, [])
 
+  const selectID = (id) => {
+    console.log(id)    
+  }
+
   return (
     <div>
       {job.map(jo => (
         <Card className={classes.card}>
-          <CardActionArea onClick={() => console.log(jo.id)}>
+          <CardActionArea onClick={() => selectID(jo.id)}>
             <CardContent>
               <Typography gutterBottom variant="h5" component="h2">
                 {jo.jobInfo.jobTitle}

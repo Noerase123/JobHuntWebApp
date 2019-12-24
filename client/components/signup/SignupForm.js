@@ -92,6 +92,18 @@ export default function SignupForm() {
 
   const handleNext = () => {
     setActiveStep(activeStep + 1);
+    
+    if (activeStep === 0) {
+      console.log('login done')
+    } else if (activeStep === 1) {
+      console.log('applicant done')
+    } else if (activeStep === 2) {
+      console.log('expected salary done')
+    } else if (activeStep === 3) {
+      console.log('work experience done')
+    } else if (activeStep === 4) {
+      console.log('education done')
+    }
   };
 
   const handleBack = () => {
