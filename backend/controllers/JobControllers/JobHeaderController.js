@@ -4,8 +4,9 @@ const JobInfoModel = require('../../models/JobInfoModel')
 const JobBenefits = require('../../models/JobBenefitsModel')
 const JobSummary = require('../../models/JobSummaryModel')
 const Company = require('../../models/CompanyOverviewModel')
+const Application = require('../../models/ApplicationModel')
 
-let apiUrl = 'http://localhost:3000/api/job/all/'
+let apiUrl = 'http://localhost:3030/api/job/all/'
 
 exports.viewJobs = async (req, res, next) => {
     const id = req.params.jobid
@@ -42,6 +43,39 @@ exports.viewJobs = async (req, res, next) => {
     
 }
 
+exports.appliedjob = async (req,res,next) => {
+    const userid = req.params.userID
+    const id = req.params.id
+
+    const app = await Application.findOne({userId: userid, jobId: id}).count()
+
+    const result = app > 0 ? true : false;
+
+    try {
+        res.status(200).json({
+            user: userid,
+            appliedToJob: result
+        })
+    } catch (err) {
+        res.status(500).json(err)
+        console.log(err)
+    }
+
+}
+
+exports.viewOne = async (req,res,next) => {
+    const id = req.params.id
+
+    const job = await JobHeaderModel.findById(id)
+
+    try {
+        res.status(200).json(job)
+    } catch (err) {
+        res.status(500).json(err)
+        console.log(err)
+    }
+}
+
 exports.viewAll = async (req, res, next) => {
     const All = await JobHeaderModel.find({}, { __v: 0 })
 
@@ -68,18 +102,6 @@ exports.viewAll = async (req, res, next) => {
         console.log(JSON.parse(err))
     }
 
-}
-
-exports.viewbyId = async (req, res, next) => {
-    const id = req.params.id
-    const getbyId = await JobHeaderModel.findById(id)
-
-    try {
-        res.status(200).json(getbyId)
-    } catch (err) {
-        res.status(500).json({ error: err })
-        console.log(JSON.parse(err))
-    }
 }
 
 exports.addJobHeader = async (req, res, next) => {

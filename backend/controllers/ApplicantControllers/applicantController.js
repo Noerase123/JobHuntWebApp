@@ -5,7 +5,7 @@ const AWE = require('../../models/AWorkExperienceModel')
 const AE = require('../../models/AEducationModel')
 const User = require('../../models/userModel')
 
-let apiUrl = 'http://localhost:3000/api/applicant/emp/'
+let apiUrl = 'http://localhost:3030/api/applicant/emp/'
 
 exports.viewEmployee = async (req, res, next) => {
     const id = req.params.applicantID

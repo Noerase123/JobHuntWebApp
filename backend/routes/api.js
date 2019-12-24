@@ -11,6 +11,9 @@ const jobInfo = require('./jobRoutes/jobInfo')
 const jobBenefits = require('./jobRoutes/jobBenefits')
 const jobSummary = require('./jobRoutes/jobSummary')
 const company = require('./jobRoutes/companyOverview')
+
+const application = require('./applicationRoutes/application')
+
 const users = require('./users')
 
 router.use('/user', users);
@@ -24,5 +27,7 @@ router.use('/jobInfo', jobInfo);
 router.use('/jobBenefits', jobBenefits);
 router.use('/jobSummary', jobSummary);
 router.use('/company', company);
+
+router.use('/application', application);
 
 module.exports = router;
