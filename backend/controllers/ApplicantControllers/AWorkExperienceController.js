@@ -14,8 +14,8 @@ exports.viewAll = async (req, res, next) => {
 }
 
 exports.viewbyId = async (req, res, next) => {
-    const id = req.params.applicantID
-    const getbyid = await AWorkExperienceModel.find({applicantId:id})
+    const id = req.params.id
+    const getbyid = await AWorkExperienceModel.findById(id)
     try {
         res.status(200).json(getbyid)
     } catch (err) {
@@ -29,6 +29,7 @@ exports.addWE = async (req, res, next) => {
         applicantId: req.params.applicantID,
         jobTitle: req.body.jobTitle,
         company: req.body.company,
+        address: req.body.address,
         from: req.body.from,
         to: req.body.to,
         current: req.body.current,
@@ -47,8 +48,8 @@ exports.addWE = async (req, res, next) => {
 }
 
 exports.deleteWE = async (req, res, next) => {
-    const id = req.params.applicantID
-    await AWorkExperienceModel.deleteMany({ applicantId: id })
+    const id = req.params.id
+    await AWorkExperienceModel.findByIdAndDelete(id)
     try {
         res.status(200).json({
             message: 'Work experience has been removed'
@@ -60,12 +61,12 @@ exports.deleteWE = async (req, res, next) => {
 }
 
 exports.updateWE = async (req, res, next) => {
-    const id = req.params.applicantID
+    const id = req.params.id
     const updateOps = {}
     for (const ops of req.body) {
-        updateOps[ops.propName] = ops.value
+        updateOps[ops.key] = ops.value
     }
-    await AWorkExperienceModel.update({ applicantId: id }, { $set: updateOps })
+    await AWorkExperienceModel.update({ _id: id }, { $set: updateOps })
     try {
         res.status(200).json({
             message: 'work experience updated'

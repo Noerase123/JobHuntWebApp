@@ -14,8 +14,8 @@ exports.viewAll = async (req, res, next) => {
 }
 
 exports.viewbyId = async (req, res, next) => {
-    const id = req.params.applicantID
-    const getbyId = await educationModel.find({applicantId: id})
+    const id = req.params.id
+    const getbyId = await educationModel.findById(id)
     try {
         res.status(200).json(getbyId)
     } catch (err) {
@@ -46,9 +46,9 @@ exports.addEduc = async (req, res, next) => {
 }
 
 exports.deleteEduc = async (req, res, next) => {
-    const id = req.params.applicantID
+    const id = req.params.id
 
-    await educationModel.deleteMany({ applicantId: id })
+    await educationModel.findByIdAndDelete(id)
     try {
         res.status(200).json({
             message: `${id} educationModel deleted`
@@ -60,12 +60,12 @@ exports.deleteEduc = async (req, res, next) => {
 }
 
 exports.updateEduc = async (req, res, next) => {
-    const id = req.params.applicantID
+    const id = req.params.id
     const updateOps = {}
     for (const ops of req.body) {
         updateOps[ops.propName] = ops.value
     }
-    await educationModel.update({ applicantId: id }, { $set: updateOps })
+    await educationModel.update({ _id: id}, { $set: updateOps })
     try {
         res.status(200).json({
             message: 'Expected salary'

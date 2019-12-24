@@ -43,7 +43,8 @@ exports.viewEmployee = async (req, res, next) => {
 }
 
 exports.viewAll = async (req, res, next) => {
-    const All = await ApplicantModel.find({}, { __v: 0 })
+
+    const All = await ApplicantModel.find()
 
     try {
         const getAll = All.map(app => {
@@ -74,7 +75,7 @@ exports.viewAll = async (req, res, next) => {
 
 exports.viewbyId = async (req, res, next) => {
     const id = req.params.id
-    const getbyId = await ApplicantModel.find({userId:id})
+    const getbyId = await ApplicantModel.find({ userId: id })
 
     try {
         res.status(200).json(getbyId)
@@ -87,29 +88,38 @@ exports.viewbyId = async (req, res, next) => {
 exports.addApplicant = async (req, res, next) => {
     const userID = req.params.userID
 
-    const email = await User.findById(userID)
+    const have = await User.findById(userID).countDocuments()
 
-    console.log(email.username)
-
-    const appli = new ApplicantModel({
-        userId: userID,
-        firstname: req.body.firstname,
-        lastname: req.body.lastname,
-        location: req.body.location,
-        contactNo: req.body.contactNo,
-        email: email.username,
-        birthday: req.body.birthday,
-        gender: req.body.gender
-    })
-
-    await appli.save()
-    try {
-        res.status(201).json({
-            message: 'Applicant added'
+    if (have >= 1 && have === 0) {
+        res.status(409).json({
+            message: "sorry your request is conflict"
         })
-    } catch (err) {
-        res.status(500).json(err)
-        console.log(err)
+    } else {
+
+        const email = await User.findById(userID)
+
+        console.log(email.username)
+
+        const appli = new ApplicantModel({
+            userId: userID,
+            firstname: req.body.firstname,
+            lastname: req.body.lastname,
+            location: req.body.location,
+            contactNo: req.body.contactNo,
+            email: email.username,
+            birthday: req.body.birthday,
+            gender: req.body.gender
+        })
+
+        await appli.save()
+        try {
+            res.status(201).json({
+                message: 'Applicant added'
+            })
+        } catch (err) {
+            res.status(500).json(err)
+            console.log(err)
+        }
     }
 }
 

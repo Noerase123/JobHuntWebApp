@@ -5,9 +5,9 @@ const auth = require('../../middleware/Auth')
 
 /* GET users listing. */
 router.get('/', auth, educationController.viewAll);
-router.get('/:applicantID', auth, educationController.viewbyId);
+router.get('/:id', auth, educationController.viewbyId);
 router.post('/:applicantID', auth, educationController.addEduc);
-router.patch('/:applicantID', auth, educationController.updateEduc);
-router.delete('/:applicantID', auth, educationController.deleteEduc);
+router.patch('/:id', auth, educationController.updateEduc);
+router.delete('/:id', auth, educationController.deleteEduc);
 
 module.exports = router;

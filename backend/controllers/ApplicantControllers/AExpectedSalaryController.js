@@ -15,8 +15,8 @@ exports.viewAll = async (req, res, next) => {
 }
 
 exports.viewbyapplicantId = async (req, res, next) => {
-    const applicantID = req.params.applicantID
-    const getbyId = await ExpectedSalary.find({applicantId: applicantID})
+    const id = req.params.id
+    const getbyId = await ExpectedSalary.findById(id)
     try {
         res.status(200).json(getbyId)
     } catch (err) {
@@ -26,8 +26,18 @@ exports.viewbyapplicantId = async (req, res, next) => {
 }
 
 exports.addES = async (req, res, next) => {
+    const content = req.params.applicantID
+    
+    const have = await ExpectedSalary.find({applicantId: content}).count()
+
+    if (have >= 1) {
+        res.status(409).json({
+            message: 'request has already given'
+        })
+    } else {
+
     const ES = new ExpectedSalary({
-        applicantId: req.params.applicantID,
+        applicantId: content,
         minimum: req.body.minimum,
         maximum: req.body.maximum,
         currency: req.body.currency,
@@ -42,26 +52,14 @@ exports.addES = async (req, res, next) => {
         res.status(500).json(err)
         console.log(err)
     }
-}
 
-exports.deleteES = async (req, res, next) => {
-    const id = req.params.applicantID
-
-    await ExpectedSalary.deleteMany({ applicantId: id })
-    try {
-        res.status(200).json({
-            message: `${id} expectedSalary deleted`
-        })
-    } catch (err) {
-        res.status(500).json(err)
-        console.log(err)
     }
 }
 
-exports.deleteESbyID = async (req, res, next) => {
+exports.deleteES = async (req, res, next) => {
     const id = req.params.id
 
-    await ExpectedSalary.deleteOne({ _id: id })
+    await ExpectedSalary.findByIdAndDelete(id)
     try {
         res.status(200).json({
             message: `${id} expectedSalary deleted`
@@ -78,10 +76,10 @@ exports.updateSalary = async (req, res, next) => {
     for (const ops of req.body) {
         updateOps[ops.propName] = ops.value
     }
-    await ExpectedSalary.update({ applicantId: id }, { $set: updateOps })
+    await ExpectedSalary.update({ _id: id }, { $set: updateOps })
     try {
         res.status(200).json({
-            message: 'Expected salary'
+            message: 'Expected salary updated'
         })
     } catch (err) {
         res.status(500).json(err)

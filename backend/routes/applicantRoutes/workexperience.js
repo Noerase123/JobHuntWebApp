@@ -4,9 +4,9 @@ const AworkExpController = require('../../controllers/ApplicantControllers/AWork
 const auth = require('../../middleware/Auth')
 /* GET users listing. */
 router.get('/', auth, AworkExpController.viewAll);
-router.get('/:applicantID', auth, AworkExpController.viewbyId);
+router.get('/:id', auth, AworkExpController.viewbyId);
 router.post('/:applicantID', auth, AworkExpController.addWE);
-router.patch('/:applicantID', auth, AworkExpController.updateWE);
-router.delete('/:applicantID', auth, AworkExpController.deleteWE);
+router.patch('/:id', auth, AworkExpController.updateWE);
+router.delete('/:id', auth, AworkExpController.deleteWE);
 
 module.exports = router;
