@@ -5,6 +5,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+// import LoadingBar from 'react-redux-loading-bar'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -22,15 +23,28 @@ const useStyles = makeStyles(theme => ({
 export default function Nav() {
   const classes = useStyles();
 
+  const token = localStorage.getItem('token')
+  // const token = 'jobs'
+
   return (
     <div className={classes.root}>
-      <AppBar position="static" style={{backgroundColor: '#008B8B'}}>
+      {/* <LoadingBar/> */}
+      <AppBar position="static" style={{ backgroundColor: '#008B8B' }}>
         <Toolbar>
-          <Link href="/">
-          <Typography variant="h6" className={classes.title}>
-            JobHunt.com
-          </Typography>
-          </Link>
+          {token ? (
+            <Link href="/jobs">
+              <Typography variant="h6" className={classes.title}>
+                JobHunt.com
+              </Typography>
+            </Link>
+          ) : (
+              <Link href="/">
+                <Typography variant="h6" className={classes.title}>
+                  JobHunt.com
+              </Typography>
+              </Link>
+            )}
+
           <Link href="/signup">
             <Button color="inherit">Signup</Button>
           </Link>
