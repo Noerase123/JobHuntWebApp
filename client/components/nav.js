@@ -16,6 +16,8 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import Button from '@material-ui/core/Button';
 import Router from 'next/router'
+import jwt from 'jsonwebtoken'
+import Axios from 'axios'
 
 const useStyles = makeStyles(theme => ({
   grow: {
@@ -105,7 +107,7 @@ export default function PrimarySearchAppBar() {
   };
 
   const handlelogout = () => {
-    
+
     localStorage.removeItem('token')
     Router.push('/login')
 
@@ -114,6 +116,15 @@ export default function PrimarySearchAppBar() {
   const handleprofile = () => {
 
     Router.push('/profile')
+  }
+
+  const handleNotif = () => {
+    const token = localStorage.getItem('token')
+    const tok = jwt.decode(token)
+    const name = tok.info.firstname + "_" + tok.info.lastname
+    const id = tok.info._id
+    // console.log(name)
+    Router.push(`/applications?nu=${id}`)
   }
 
   const menuId = 'primary-search-account-menu';
@@ -152,12 +163,12 @@ export default function PrimarySearchAppBar() {
         <p>Messages</p>
       </MenuItem>
       <MenuItem>
-        <IconButton aria-label="show 11 new notifications" color="inherit">
+        <IconButton aria-label="show 11 new notifications" color="inherit" onClick={() => handleNotif()}>
           <Badge badgeContent={11} color="secondary">
             <NotificationsIcon />
           </Badge>
         </IconButton>
-        <p>Notifications</p>
+        <p onClick={() => handleNotif()}>Notifications</p>
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
@@ -174,6 +185,7 @@ export default function PrimarySearchAppBar() {
   );
 
   const [gettoken, settoken] = React.useState(false)
+  const [app,setApp] = React.useState(0)
 
   React.useEffect(() => {
     const token = localStorage.getItem('token')
@@ -183,6 +195,25 @@ export default function PrimarySearchAppBar() {
     } else {
       settoken(false)
     }
+
+    const apiUrl = 'http://localhost:3030/api/'
+
+    const userid = jwt.decode(token)
+
+    const header = {
+      headers: {
+        'Authorization' : `Bearer ${token}`
+      }
+    }
+
+    Axios.get(apiUrl + `application/${userid}/`, header)
+      .then(res => {
+        console.log(res.data.jobApps)
+        setApp(res.data.jobApps)
+      })
+      .catch(err => {
+        console.log(err)
+      })
   }, 1000)
 
   return (
@@ -190,7 +221,7 @@ export default function PrimarySearchAppBar() {
       <AppBar position="static" style={{ backgroundColor: '#008B8B' }}>
         <Toolbar>
           <Link href="/">
-            <a style={{color: '#fff'}}>
+            <a style={{ color: '#fff' }}>
               <Typography style={{ cursor: 'pointer' }} className={classes.title} variant="h6" noWrap>
                 JobHunt.com
               </Typography>
@@ -204,7 +235,7 @@ export default function PrimarySearchAppBar() {
               placeholder="Search…"
               classes={{ 
                 root: classes.inputRoot,
-                input: classes.inputInput,
+                input: classes.inputInput,                                                                                          
               }}
               inputProps={{ 'aria-label': 'search' }}
             />
@@ -212,15 +243,19 @@ export default function PrimarySearchAppBar() {
 
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
+
+            <Link href="/jobs">
+              <Button color="inherit">Jobs</Button>
+            </Link>
             {gettoken === true ? (
               <div>
-                <IconButton aria-label="show 4 new mails" color="inherit">
+                <IconButton aria-label="show 4 new mails" color="inherit" onClick={() => console.log('handlemessage')}>
                   <Badge badgeContent={4} color="secondary">
                     <MailIcon />
                   </Badge>
                 </IconButton>
-                <IconButton aria-label="show 17 new notifications" color="inherit">
-                  <Badge badgeContent={17} color="secondary">
+                <IconButton aria-label="show 17 new notifications" color="inherit" onClick={() => handleNotif()}>
+                  <Badge badgeContent={app.length} color="secondary">
                     <NotificationsIcon />
                   </Badge>
                 </IconButton>

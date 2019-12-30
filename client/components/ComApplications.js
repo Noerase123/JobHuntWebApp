@@ -9,7 +9,6 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Axios from 'axios'
 import { Container } from '@material-ui/core';
-import jwt from 'jsonwebtoken'
 
 const useStyles = makeStyles({
   card: {
@@ -21,53 +20,48 @@ const useStyles = makeStyles({
 export default function ComJob() {
   const classes = useStyles();
   const [job, setJob] = React.useState([])
-  const [count, setCount] = React.useState(false)
   const apiUrl = 'http://localhost:3030/api/'
 
   React.useEffect(() => {
-    Axios.get(apiUrl + 'job')
-      .then(res => {
-        console.log(res.data.data)
-        setJob(res.data.data)
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  }, 0)
 
-  const selectID = (id) => {
-    Router.push(`/jobDetails?g=${id}`)
-  }
+    const params = new URLSearchParams(window.location.search)
 
-  const applyNow = (id) => {
+    const userid = params.get('nu')
+
     const token = localStorage.getItem('token')
-    const tok = jwt.decode(token)
-    const user = tok.user._id
-
-    Axios.get(apiUrl + `application/job/${id}`)
-      .then(res => {
-        console.log(res.data)
-        setCount(true)
-      })
-      .catch(err => {
-        console.log(err)
-      })
 
     const header = {
       headers: {
-        'Authorization': 'Bearer ' + token
+        'Authorization': `Bearer ${token}`
       }
     }
 
-    Axios.post(apiUrl + `application/${user}/${id}`, {}, header)
+    Axios.get(apiUrl + `application/${userid}/`, header)
       .then(res => {
-        console.log(res.data)
-        alert(res.data.message)
+        console.log(res.data.jobApps)
+        setJob(res.data.jobApps)
       })
       .catch(err => {
         console.log(err)
-        alert('conflict job user')
       })
+  }, 1000)
+
+  const handleCancel = (id) => {
+
+    const token = localStorage.getItem('token')
+
+    const header = {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    }
+
+    if (confirm('Discontinue your application?')) {
+      Axios.delete(apiUrl + `application/${id}`, header)
+      setTimeout(() => {
+        Router.push('/jobs')
+      }, 1000);
+    }
   }
 
   return (
@@ -75,33 +69,26 @@ export default function ComJob() {
       {job.map(jo => (
         <div>
           <Card className={classes.card}>
-            <CardActionArea onClick={() => selectID(jo.id)}>
+            <CardActionArea>
               <CardContent>
                 <Typography gutterBottom variant="h5" component="h2">
-                  {jo.jobInfo.jobTitle}
+                  {jo.jobTitle}
                 </Typography>
                 <Typography variant="body2" color="textSecondary" component="p">
-                  {jo.jobInfo.company}
+                  {jo.company}
+                </Typography><br />
+                <Typography variant="body2" style={{ color: '#008B8B' }} component="p">
+                  Applicant sent
                 </Typography>
-                <Typography variant="body2" color="textSecondary" component="p">
-                  {jo.jobInfo.location} | {jo.jobInfo.salary} PHP/ month
-          </Typography>
               </CardContent>
             </CardActionArea>
-            <CardActions>
+            <CardActions fullWidth>
               <Button size="small" color="primary">
-                Saved
+                Message
               </Button>
-              {count !== false ? (
-                <Button size="small" color="primary" disabled>
-                  Application Sent
-                </Button>
-              ) : (
-                  <Button size="small" color="primary" onClick={() => applyNow(jo.id)}>
-                    Apply Now
-                </Button>
-                )}
-
+              <Button size="small" color="primary" onClick={() => handleCancel(jo._id)}>
+                Cancel
+              </Button>
             </CardActions>
           </Card>
           <br />

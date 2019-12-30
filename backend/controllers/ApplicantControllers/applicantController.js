@@ -90,7 +90,7 @@ exports.addApplicant = async (req, res, next) => {
 
     const have = await User.findById(userID).countDocuments()
 
-    if (have >= 1 && have === 0) {
+    if (have >= 1) {
         res.status(409).json({
             message: "sorry your request is conflict"
         })

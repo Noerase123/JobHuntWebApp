@@ -16,6 +16,9 @@ const application = require('./applicationRoutes/application')
 
 const users = require('./users')
 
+const images = require('./images')
+
+router.use('/images', images)
 router.use('/user', users);
 router.use('/applicant', applicant);
 router.use('/expectedSalary', expectedS);

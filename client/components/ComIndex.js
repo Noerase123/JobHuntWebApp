@@ -6,6 +6,7 @@ import TextField from '@material-ui/core/TextField';
 import { Paper, Button } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import Img from "react-image";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -26,6 +27,13 @@ const useStyles = makeStyles(theme => ({
     fontSize: theme.typography.pxToRem(15),
     fontWeight: theme.typography.fontWeightRegular,
   },
+  images: {
+    position: 'absolute', 
+    margin: '-200px', 
+    width: '100%', 
+    height: '89%', 
+    opacity: 0.7
+  }
 }));
 
 export default function ComIndex() {
@@ -34,7 +42,8 @@ export default function ComIndex() {
   return (
     <div>
       <div className={classes.root}>
-      <Typography variant="h4" gutterBottom>
+      <Img className={classes.images} src="http://localhost:3030/uploads/2019-12-29T13:14:12.301Zmacos.jpg" />
+      <Typography style={{position: 'relative'}} variant="h4" gutterBottom>
         Find your Career now and here!
       </Typography>
         <Grid container spacing={3}>

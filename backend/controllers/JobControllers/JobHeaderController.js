@@ -10,12 +10,12 @@ let apiUrl = 'http://localhost:3030/api/job/all/'
 
 exports.viewJobs = async (req, res, next) => {
     const id = req.params.jobid
-    
-    const header = await JobHeaderModel.findById(id,{__v:0})
-    const info = await JobInfoModel.findOne({jobId: id}, {__v: 0, _id: 0, jobId: 0})
-    const benefits = await JobBenefits.findOne({jobId: id}, {__v: 0, _id: 0, jobId: 0})
-    const summary = await JobSummary.findOne({jobId: id}, {__v: 0, _id: 0, jobId: 0})
-    const company = await Company.findOne({jobId: id}, {__v: 0, _id: 0, jobId: 0})
+
+    const header = await JobHeaderModel.findById(id, { __v: 0 })
+    const info = await JobInfoModel.findOne({ jobId: id }, { __v: 0, _id: 0, jobId: 0 })
+    const benefits = await JobBenefits.findOne({ jobId: id }, { __v: 0, _id: 0, jobId: 0 })
+    const summary = await JobSummary.findOne({ jobId: id }, { __v: 0, _id: 0, jobId: 0 })
+    const company = await Company.findOne({ jobId: id }, { __v: 0, _id: 0, jobId: 0 })
 
     const head = {
         datePosted: header.datePosted,
@@ -40,14 +40,31 @@ exports.viewJobs = async (req, res, next) => {
     } catch (err) {
         res.status(500).json(err)
     }
-    
+
 }
 
-exports.appliedjob = async (req,res,next) => {
+exports.searchItem = async (req,res,next) => {
+    const item = req.query.q
+
+    if (item) {
+        const getSearch = await JobHeaderModel.find({ jobTitle: item })
+
+        try {
+            res.status(200).json({
+                result: getSearch
+            })
+        } catch (err) {
+            res.status(500).json(err)
+            console.log(err)
+        }
+    }
+}
+
+exports.appliedjob = async (req, res, next) => {
     const userid = req.params.userID
     const id = req.params.id
 
-    const app = await Application.findOne({userId: userid, jobId: id}).count()
+    const app = await Application.findOne({ userId: userid, jobId: id }).count()
 
     const result = app > 0 ? true : false;
 
@@ -63,7 +80,7 @@ exports.appliedjob = async (req,res,next) => {
 
 }
 
-exports.viewOne = async (req,res,next) => {
+exports.viewOne = async (req, res, next) => {
     const id = req.params.id
 
     const job = await JobHeaderModel.findById(id)
@@ -77,6 +94,7 @@ exports.viewOne = async (req,res,next) => {
 }
 
 exports.viewAll = async (req, res, next) => {
+
     const All = await JobHeaderModel.find({}, { __v: 0 })
 
     try {

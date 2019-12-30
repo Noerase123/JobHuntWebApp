@@ -4,6 +4,8 @@ const applicationController = require('../../controllers/ApplicationControllers/
 const auth = require('../../middleware/Auth')
 
 /* GET users listing. */
+router.get('/', auth, applicationController.all)
+router.get('/job/:id', auth, applicationController.getbyid)
 router.get('/:userID', auth, applicationController.getAll);
 router.post('/:userID/:jobID', auth, applicationController.addApp);
 router.delete('/:id', auth, applicationController.deleteApp);
