@@ -18,21 +18,28 @@ const useStyles = makeStyles({
   },
 });
 
-export default function ComJob() {
+export default function ComSearch() {
   const classes = useStyles();
   const [job, setJob] = React.useState([])
   const [count, setCount] = React.useState(false)
   const apiUrl = 'http://localhost:3030/api/'
 
   React.useEffect(() => {
-    Axios.get(apiUrl + 'job')
-      .then(res => {
-        console.log(res.data.data)
-        setJob(res.data.data)
+    const apiUrlef = apiUrl + 'job/search'
+
+    const query = new URLSearchParams(window.location.search)
+    
+    const search = query.get('q')
+
+    Axios.get(apiUrlef+ `?term=${search}`)
+      .then(res =>{
+        console.log(res.data)
+        setJob(res.data)
       })
       .catch(err => {
         console.log(err)
       })
+
   }, 0)
 
   const selectID = (id) => {
@@ -44,10 +51,10 @@ export default function ComJob() {
     const tok = jwt.decode(token)
     const user = tok.user._id
 
-    Axios.get(apiUrl + `job/${id}/${user}`)
+    Axios.get(apiUrl + `application/job/${id}`)
       .then(res => {
-        console.log(res.data.appliedToJob)
-        setCount(res.data.appliedToJob)
+        console.log(res.data)
+        setCount(true)
       })
       .catch(err => {
         console.log(err)
@@ -75,16 +82,16 @@ export default function ComJob() {
       {job.map(jo => (
         <div>
           <Card className={classes.card}>
-            <CardActionArea onClick={() => selectID(jo.id)}>
+            <CardActionArea onClick={() => selectID(jo._id)}>
               <CardContent>
                 <Typography gutterBottom variant="h5" component="h2">
-                  {jo.jobInfo.jobTitle}
+                  {jo.jobTitle}
                 </Typography>
                 <Typography variant="body2" color="textSecondary" component="p">
-                  {jo.jobInfo.company}
+                  {jo.company}
                 </Typography>
                 <Typography variant="body2" color="textSecondary" component="p">
-                  {jo.jobInfo.location} | {jo.jobInfo.salary} PHP/ month
+                  {jo.location} | {jo.salary} PHP/ month
           </Typography>
               </CardContent>
             </CardActionArea>
@@ -92,12 +99,12 @@ export default function ComJob() {
               <Button size="small" color="primary">
                 Saved
               </Button>
-              {count === true ? (
+              {count !== false ? (
                 <Button size="small" color="primary" disabled>
                   Application Sent
                 </Button>
               ) : (
-                  <Button size="small" color="primary" onClick={() => applyNow(jo.id)}>
+                  <Button size="small" color="primary" onClick={() => applyNow(jo._id)}>
                     Apply Now
                 </Button>
                 )}

@@ -272,9 +272,6 @@ export default function PrimarySearchAppBar() {
               </div>
             ) : (
                 <div>
-                  <Link href="/jobs">
-                    <Button color="inherit">Jobs</Button>
-                  </Link>
                   <Link href="/signup">
                     <Button color="inherit">Signup</Button>
                   </Link>

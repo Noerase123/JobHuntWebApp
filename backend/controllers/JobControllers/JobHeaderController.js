@@ -43,20 +43,40 @@ exports.viewJobs = async (req, res, next) => {
 
 }
 
-exports.searchItem = async (req,res,next) => {
-    const item = req.query.q
+const queryVar = function(str) {
+    let q = str.replace( /\r\n/g, '').replace(/^\s+|\s+$/, '').replace(/[^a-z\s]+/gi, '').replace(/\s+$/, '');
 
-    if (item) {
-        const getSearch = await JobHeaderModel.find({ jobTitle: item })
-
-        try {
-            res.status(200).json({
-                result: getSearch
-            })
-        } catch (err) {
-            res.status(500).json(err)
-            console.log(err)
+    let parts = q.split(/\s/);
+    let terms = [];
+    parts.forEach(part => {
+        if(stopwords.indexOf(part) === -1) {
+            terms.push(part);
         }
+    });
+    let query = {'$and': []};
+    terms.forEach(term => {
+       let queryFrag = {jobTitle: {'$regex': term, '$options': 'i'}};
+       query['$and'].push(queryFrag);
+    });
+    return query;
+};
+
+exports.searchItem = async (req,res,next) => {
+    let searchQuery = req.query.term;
+    const search = await JobHeaderModel.find
+    ({'$and': [
+            {'jobTitle': 
+                {'$regex': searchQuery,
+                '$options': 'i'
+                }
+            }
+        ]
+    });
+    try {
+        res.status(200).json(search)
+    } catch (err) {
+        res.status(500).json(err)
+        console.log(err)
     }
 }
 

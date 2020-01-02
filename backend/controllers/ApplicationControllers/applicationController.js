@@ -30,7 +30,7 @@ exports.getbyid = async (req,res,next) => {
 
 exports.getAll = async (req, res, next) => {
     const id = req.params.userID
-    const app = await Application.find({}, { __v: 0, userId: 0 })
+    const app = await Application.find({userId: id}, { __v: 0, userId: 0 })
 
     try {
         res.status(200).json({

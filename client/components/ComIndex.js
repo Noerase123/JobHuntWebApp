@@ -1,4 +1,5 @@
 import React from 'react';
+import Router from 'next/router'
 import { fade, makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
@@ -7,6 +8,7 @@ import { Paper, Button } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Img from "react-image";
+import Axios from 'axios'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -38,6 +40,21 @@ const useStyles = makeStyles(theme => ({
 
 export default function ComIndex() {
   const classes = useStyles();
+  const [search, setSearch] = React.useState("")
+
+  const query = () => {
+    const apiUrl = 'http://localhost:3030/api/job/search'
+
+    Axios.get(apiUrl+ `?term=${search}`)
+      .then(res =>{
+        console.log(res.data)
+        Router.push('/search?q='+search)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+
+  }
 
   return (
     <div>
@@ -49,11 +66,11 @@ export default function ComIndex() {
         <Grid container spacing={3}>
           <Grid item xs={6}>
             <Paper className={classes.paper}>
-              <TextField id="standard-basic" label="Search Job" fullWidth />
+              <TextField id="standard-basic" label="Search Job" fullWidth onChange={(event) => setSearch(event.target.value)} />
             </Paper>
           </Grid>
           <Grid item xs={3}>
-            <Button variant="contained" color="primary" style={{ padding: '20px' }}>Search</Button>
+            <Button variant="contained" color="primary" style={{ padding: '20px' }} onClick={() => query()}>Search</Button>
           </Grid>
         </Grid>
       </div>

@@ -22,6 +22,10 @@ const useStyles = makeStyles({
     pos: {
         marginBottom: 12,
     },
+    editBtns: {
+        backgroundColor: '#008B8B',
+        color: '#fff'
+    }
 });
 
 export default function ComJobDetails() {
@@ -67,78 +71,125 @@ export default function ComJobDetails() {
                     <CardContent>
                         <h3>Basic Information</h3>
                         <Paper style={{ padding: '10px', backgroundColor: '#e3e3e3' }}>
-                            <Typography variant="h5" component="h2">
-                                {basic.firstname} {basic.lastname}
-                            </Typography><br />
-                            <Typography className={classes.pos} color="textSecondary">
-                                {basic.email} 
-                            </Typography>
-                            <Typography className={classes.pos} color="textSecondary">
-                                Contact No. : 0{basic.contactNo} <br/>
-                                Birthday : {basic.birthday}
-                            </Typography>
-                            <Typography className={classes.pos} color="textSecondary">
-                                Location : {basic.location}
-                            </Typography>
-                            <Typography className={classes.pos} color="textSecondary">
-                                Gender : {basic.gender}
-                            </Typography>
+                            {basic.firstname || basic.lastname || basic.email || basic.contactNo
+                                || basic.location || basic.birthday || basic.gender
+                                ? (
+                                    <div>
+                                        <Typography variant="h5" component="h2">
+                                            {basic.firstname} {basic.lastname}
+                                        </Typography><br />
+                                        <Typography className={classes.pos} color="textSecondary">
+                                            {basic.email}
+                                        </Typography>
+                                        <Typography className={classes.pos} color="textSecondary">
+                                            Contact No. : 0{basic.contactNo} <br />
+                                            Birthday : {basic.birthday}
+                                        </Typography>
+                                        <Typography className={classes.pos} color="textSecondary">
+                                            Location : {basic.location}
+                                        </Typography>
+                                        <Typography className={classes.pos} color="textSecondary">
+                                            Gender : {basic.gender}
+                                        </Typography>
+                                        <Button variant="contained" className={classes.editBtns}>Edit Basic Info</Button>
+                                    </div>
+                                ) : (
+                                    <div>
+                                        <p>No Content Available</p>
+                                        <Button variant="contained" className={classes.editBtns}> Add Basic Info</Button>
+                                    </div>
+                             )}
+
                         </Paper><br />
 
                         <h3>Expected Salary</h3>
                         <Paper style={{ padding: '10px', backgroundColor: '#e3e3e3' }}>
-                            <Typography className={classes.pos} color="textSecondary">
-                                Minimum amount : {exps.minimum}
-                            </Typography>
-                            <Typography className={classes.pos} color="textSecondary">
-                                Maximum amount : {exps.maximum}
-                            </Typography>
-                            <Typography className={classes.pos} color="textSecondary">
-                                Currency : {exps.currency}
-                            </Typography>
-                            <Typography className={classes.pos} color="textSecondary">
-                                Frequency demands :{exps.frequency}
-                            </Typography>
+                            {exps.minimum || exps.maximum || exps.currency || exps.frequency ? (
+                                <div>
+                                    <Typography className={classes.pos} color="textSecondary">
+                                        Minimum amount : {exps.minimum || 'No Content'}
+                                    </Typography>
+                                    <Typography className={classes.pos} color="textSecondary">
+                                        Maximum amount : {exps.maximum || 'No Content'}
+                                    </Typography>
+                                    <Typography className={classes.pos} color="textSecondary">
+                                        Currency : {exps.currency || 'No Content'}
+                                    </Typography>
+                                    <Typography className={classes.pos} color="textSecondary">
+                                        Frequency demands :{exps.frequency || 'No Content'}
+                                    </Typography>
+                                    <Button variant="contained" className={classes.editBtns}>Edit Expected Salary</Button>
+                                </div>
+                            ) : (
+                                    <div>
+                                        <p>No Content Available</p>
+                                        <Button variant="contained" className={classes.editBtns}>Add Expected Salary</Button>
+                                    </div>
+                                )}
                         </Paper><br />
 
                         <h3>Work Experience</h3>
                         <Paper style={{ padding: '10px', backgroundColor: '#e3e3e3' }}>
-                            {workexp.map(work => (
+                            {workexp.length > 0 ? (
                                 <div>
-                                    <Paper style={{padding: '20px'}}>
-                                    <Typography className={classes.pos}>
-                                        Title : {work.jobTitle}
-                                    </Typography>
-                                    <Typography className={classes.pos}>
-                                        Company : {work.company} <br/>
-                                        Address : {work.address} <br/>
-                                        from : {work.from} to: {work.to} <br/>
-                                        current job : {work.current === true ? 'Yes' : 'No'}
-                                    </Typography>
-                                    </Paper>
-                                    <br/>
+                                    {workexp.map(work => (
+                                        <div>
+                                            <Paper style={{ padding: '20px' }}>
+                                                <Typography className={classes.pos}>
+                                                    Title : {work.jobTitle}
+                                                </Typography>
+                                                <Typography className={classes.pos}>
+                                                    Company : {work.company} <br />
+                                                    Address : {work.address} <br />
+                                                    from : {work.from} to: {work.to} <br />
+                                                    current job : {work.current === true ? 'Yes' : 'No'}
+                                                </Typography>
+
+                                                <Button variant="contained" className={classes.editBtns}>Edit Basic Info</Button>
+                                            </Paper>
+                                            <br />
+                                        </div>
+                                    ))}
                                 </div>
-                            ))}
-                        </Paper> <br/>
+                            ) : (
+                                    <div>
+                                        <p>No Content Available</p>
+                                        <Button variant="contained" className={classes.editBtns}>Add Work Experience</Button>
+                                    </div>
+                                )}
+                        </Paper> <br />
 
                         <h3>Education Attainment</h3>
                         <Paper style={{ padding: '10px', backgroundColor: '#e3e3e3' }}>
-                            {educ.map(edu => (
+                            {educ.length > 0 ? (
                                 <div>
-                                    <Paper style={{padding: '20px'}}>
-                                    <Typography className={classes.pos}>
-                                        School : {edu.school}
-                                    </Typography>
-                                    <Typography className={classes.pos}>
-                                        Educational Attained : {edu.educationAttained} <br/>
-                                        Course : {edu.course} <br/>
-                                        from year : {edu.fromYear}
-                                        Graduate : {edu.graduated === true ? 'Yes' : 'No'}
-                                    </Typography>
-                                    </Paper>
-                                    <br/>
+                                    {educ.map(edu => (
+                                        <div>
+                                            <Paper style={{ padding: '20px' }}>
+                                                <Typography className={classes.pos}>
+                                                    School : {edu.school}
+                                                </Typography>
+                                                <Typography className={classes.pos}>
+                                                    Educational Attained : {edu.educationAttained} <br />
+                                                    Course : {edu.course} <br />
+                                                    from year : {edu.fromYear}
+                                                    Graduate : {edu.graduated === true ? 'Yes' : 'No'}
+                                                </Typography>
+
+                                                <Button variant="contained" className={classes.editBtns}>Edit Basic Info</Button>
+                                            </Paper>
+                                            <br />
+                                        </div>
+                                    ))}
                                 </div>
-                            ))}
+                            ) : (
+                                    <div>
+                                        <p>No Content Available</p>
+                                        <Button variant="contained" className={classes.editBtns}>Add Education Attainment</Button>
+                                    </div>
+                                )}
+
+
                         </Paper>
 
                     </CardContent>

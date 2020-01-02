@@ -7,6 +7,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import Paper from '@material-ui/core/Paper'
 import Axios from 'axios'
 import { Container } from '@material-ui/core';
 
@@ -65,36 +66,47 @@ export default function ComJob() {
   }
 
   return (
-    <Container>
-      {job.map(jo => (
-        <div>
-          <Card className={classes.card}>
-            <CardActionArea>
-              <CardContent>
-                <Typography gutterBottom variant="h5" component="h2">
-                  {jo.jobTitle}
-                </Typography>
-                <Typography variant="body2" color="textSecondary" component="p">
-                  {jo.company}
-                </Typography><br />
-                <Typography variant="body2" style={{ color: '#008B8B' }} component="p">
-                  Applicant sent
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-            <CardActions fullWidth>
-              <Button size="small" color="primary">
-                Message
-              </Button>
-              <Button size="small" color="primary" onClick={() => handleCancel(jo._id)}>
-                Cancel
-              </Button>
-            </CardActions>
-          </Card>
-          <br />
-        </div>
-      ))}
+    <Paper variant="outlined" style={{ backgroundColor: '#e3e3e3' }}>
 
-    </Container>
+      {job.length > 0 ? (
+        <Container>
+
+          {job.map(jo => (
+            <div>
+              <Card className={classes.card}>
+                <CardActionArea>
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="h2">
+                      {jo.jobTitle}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary" component="p">
+                      {jo.company}
+                    </Typography><br />
+                    <Typography variant="body2" style={{ color: '#008B8B' }} component="p">
+                      Applicant sent
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+                <CardActions fullWidth>
+                  <Button size="small" color="primary">
+                    Message
+                  </Button>
+                  <Button size="small" color="primary" onClick={() => handleCancel(jo._id)}>
+                    Cancel
+                  </Button>
+                </CardActions>
+              </Card>
+              <br />
+            </div>
+          ))}
+
+        </Container>
+      ) : (
+          <div>
+            <h3 style={{padding: '20px'}}>No Application for the moment</h3>
+          </div>
+        )}
+
+    </Paper>
   );
 }
