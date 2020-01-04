@@ -47,11 +47,12 @@ exports.addApp = async (req, res, next) => {
     const userid = req.params.userID
     const id = req.params.jobID
 
-    const have = await Application.findOne({jobId:id}).countDocuments()
+    const have = await Application.find({userId:userid, jobId:id}).countDocuments()
 
-    if (have >= 1) {
+    if (have > 0) {
         res.status(409).json({
-            message: "sorry your is invalid"
+            message: "sorry your is invalid",
+            count: have
         })
     } else {
 

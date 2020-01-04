@@ -10,6 +10,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
+import Axios from 'axios'
+
 const useStyles = makeStyles(theme => ({
   button: {
     display: 'block',
@@ -35,40 +37,15 @@ const useStyles = makeStyles(theme => ({
 
 export default function EmpInfo() {
   const classes = useStyles();
-  const [gender, setGender] = React.useState('');
   const [openGender, setOpenGender] = React.useState(false);
 
-  const [month, setMonth] = React.useState('');
   const [openMonth, setOpenMonth] = React.useState(false);
 
-  const [date, setDate] = React.useState('');
   const [openDate, setOpenDate] = React.useState(false);
 
-  const [year, setYear] = React.useState('');
   const [openYear, setOpenYear] = React.useState(false);
 
-  const [code, setCode] = React.useState('');
   const [openCode, setOpenCode] = React.useState(false);
-  
-  const handleChangec = event => {
-    setCode(event.target.value);
-  };
-
-  const handleChangeg = event => {
-    setGender(event.target.value);
-  };
-
-  const handleChangem = event => {
-    setMonth(event.target.value);
-  };
-
-  const handleChanged = event => {
-    setDate(event.target.value);
-  };
-
-  const handleChangey = event => {
-    setYear(event.target.value);
-  };
 
   const hCloseCode = () => {
     setOpenCode(false);
@@ -105,6 +82,57 @@ export default function EmpInfo() {
     setOpenYear(true);
   };
 
+  const [first, setfirst] = React.useState('')
+  const [last, setLast] = React.useState('')
+  const [location, setlocation] = React.useState('')
+  const [_code, _setCode] = React.useState('')
+  const [number, setNumber] = React.useState(0)
+  const [email, setEmail] = React.useState('')
+  const [_month, _setMonth] = React.useState('')
+  const [_date, _setDate] = React.useState('')
+  const [_year, _setYear] = React.useState('')
+  const [_gender, _setGender] = React.useState('')
+  const [disbtn, setdisbtn] = React.useState(false)
+
+  React.useEffect(() => {
+    const id = localStorage.getItem('user_id')
+    Axios.get(`http://localhost:3030/api/user/getOne/${id}`)
+      .then(res => {
+        console.log(res.data.username)
+        setEmail(res.data.username)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  },1000)
+
+  const addEmpInfo = () => {
+    const apiUrl = 'http://localhost:3030/api/'
+    const user_id = localStorage.getItem('user_id')
+
+    const payload = {
+      "firstname" : first,
+      "lastname" : last,
+      "location" : location,
+      "contactNo" : _code + number,
+      "email" : email,
+      "birthday" : `${_month}/${_date}/${_year}`,
+      "gender" : _gender
+    }
+
+    Axios.post(apiUrl + `applicant/${user_id}`, payload) 
+        .then(res => {
+          console.log(res.data)
+          setdisbtn(true)
+          localStorage.setItem('applicant_id', res.data.applicant_id)
+          localStorage.setItem('applicant', true)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    
+  }
+
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
@@ -112,13 +140,13 @@ export default function EmpInfo() {
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
-          <TextField required id="cardName" label="Firstname" fullWidth />
+          <TextField required id="firstname" label="Firstname" fullWidth onChange={event => setfirst(event.target.value)} />
         </Grid>
         <Grid item xs={12} md={6}>
-          <TextField required id="cardNumber" label="Lastname" fullWidth />
+          <TextField required id="lastname" label="Lastname" fullWidth onChange={event => setLast(event.target.value)}/>
         </Grid>
         <Grid item xs={12}>
-          <TextField required id="expDate" label="Location" fullWidth />
+          <TextField required id="location" label="Location" fullWidth onChange={event => setlocation(event.target.value)}/>
         </Grid>
         <Grid item xs={12} md={6}>
           <FormControl className={classes.formControlCode}>
@@ -129,13 +157,13 @@ export default function EmpInfo() {
               open={openCode}
               onClose={hCloseCode}
               onOpen={hOpenCode}
-              value={code}
-              onChange={handleChangec}
+              value={_code}
+              onChange={event => _setCode(event.target.value)}
             >
               <MenuItem value="">
                 <em>None</em>
               </MenuItem>
-              <MenuItem value={'+63'}>+63</MenuItem>
+              <MenuItem value={'63'}>+63</MenuItem>
             </Select>
           </FormControl>
           <TextField
@@ -144,14 +172,7 @@ export default function EmpInfo() {
             id="phone"
             label="Phone Number"
             style={{width: '68%'}}
-          />
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <TextField
-            required
-            id="email"
-            label="Email"
-            fullWidth
+            onChange={event => setNumber(event.target.value)}
           />
         </Grid>
         <Grid item xs={12} md={6}>
@@ -163,8 +184,8 @@ export default function EmpInfo() {
               open={openMonth}
               onClose={hCloseMonth}
               onOpen={hOpenMonth}
-              value={month}
-              onChange={handleChangem}
+              value={_month}
+              onChange={event => _setMonth(event.target.value)}
             >
               <MenuItem value="">
                 <em>None</em>
@@ -191,8 +212,8 @@ export default function EmpInfo() {
               open={openDate}
               onClose={hCloseDate}
               onOpen={hOpenDate}
-              value={date}
-              onChange={handleChanged}
+              value={_date}
+              onChange={event => _setDate(event.target.value)}
             >
               <MenuItem value="">
                 <em>None</em>
@@ -238,8 +259,8 @@ export default function EmpInfo() {
               open={openYear}
               onClose={hCloseYear}
               onOpen={hOpenYear}
-              value={year}
-              onChange={handleChangey}
+              value={_year}
+              onChange={event => _setYear(event.target.value)}
             >
               <MenuItem value="">
                 <em>None</em>
@@ -267,8 +288,8 @@ export default function EmpInfo() {
               open={openGender}
               onClose={handleClose}
               onOpen={handleOpen}
-              value={gender}
-              onChange={handleChangeg}
+              value={_gender}
+              onChange={event => _setGender(event.target.value)}
             >
               <MenuItem value="">
                 <em>None</em>
@@ -277,6 +298,18 @@ export default function EmpInfo() {
               <MenuItem value={'female'}>Female</MenuItem>
             </Select>
           </FormControl>
+        </Grid>
+
+        <Grid item xs={12}>
+          <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            onClick={addEmpInfo}
+            disabled={disbtn}
+          >
+            Save
+          </Button>
         </Grid>
       </Grid>
     </React.Fragment>

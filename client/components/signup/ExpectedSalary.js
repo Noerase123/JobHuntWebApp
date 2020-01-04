@@ -10,6 +10,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
+import Axios from 'axios';
 const useStyles = makeStyles(theme => ({
   button: {
     display: 'block',
@@ -27,12 +28,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function ExpectedSalary() {
   const classes = useStyles();
-  const [gender, setGender] = React.useState('');
   const [openGender, setOpenGender] = React.useState(false);
-
-  const handleChangeg = event => {
-    setGender(event.target.value);
-  };
 
   const handleClose = () => {
     setOpenGender(false);
@@ -41,12 +37,7 @@ export default function ExpectedSalary() {
     setOpenGender(true);
   };
 
-  const [currency, setCurrency] = React.useState('');
   const [openGenderc, setOpenGenderc] = React.useState(false);
-
-  const handleChangec = event => {
-    setCurrency(event.target.value);
-  };
 
   const handleClosec = () => {
     setOpenGenderc(false);
@@ -55,6 +46,34 @@ export default function ExpectedSalary() {
     setOpenGenderc(true);
   };
 
+  const [minimum , setMinimum] = React.useState(0)
+  const [maximum, setMaximum] = React.useState(0)
+  const [currency, setCurrency] = React.useState('')
+  const [freq, setFreq] = React.useState('')
+  const [disbtn, setDisbtn] = React.useState(false)
+
+  const addES = () => {
+    const apiUrl = 'http://localhost:3030/api/'
+
+    const id = localStorage.getItem('applicant_id')
+
+    const payload = {
+      "minimum" : minimum,
+      "maximum" : maximum,
+      "currency" : currency,
+      "frequency" : freq
+    }
+
+    Axios.post(apiUrl+ `expectedSalary/${id}`, payload)
+        .then(res => {
+          console.log(res.data)
+          setDisbtn(true)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+  }
+
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
@@ -62,10 +81,10 @@ export default function ExpectedSalary() {
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
-          <TextField required id="minimum" label="Minimum" type="number" fullWidth />
+          <TextField required id="minimum" label="Minimum" type="number" fullWidth onChange={event => setMinimum(event.target.value)} />
         </Grid>
         <Grid item xs={12} md={6}>
-          <TextField required id="maximum" label="Maximum" type="number" fullWidth />
+          <TextField required id="maximum" label="Maximum" type="number" fullWidth onChange={event => setMaximum(event.target.value)} />
         </Grid>
         <Grid item xs={12} md={6}>
           <FormControl className={classes.formControl}>
@@ -77,7 +96,7 @@ export default function ExpectedSalary() {
               onClose={handleClosec}
               onOpen={handleOpenc}
               value={currency}
-              onChange={handleChangec}
+              onChange={event => setCurrency(event.target.value)}
             >
               <MenuItem value="">
                 <em>None</em>
@@ -98,8 +117,8 @@ export default function ExpectedSalary() {
               open={openGender}
               onClose={handleClose}
               onOpen={handleOpen}
-              value={gender}
-              onChange={handleChangeg}
+              value={freq}
+              onChange={event => setFreq(event.target.value)}
             >
               <MenuItem value="">
                 <em>None</em>
@@ -109,6 +128,17 @@ export default function ExpectedSalary() {
               <MenuItem value={'per year'}>Per Year</MenuItem>
             </Select>
           </FormControl>
+        </Grid>
+        <Grid item xs={12}>
+          <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            onClick={addES}
+            disabled={disbtn}
+          >
+            Save
+          </Button>
         </Grid>
       </Grid>
     </React.Fragment>

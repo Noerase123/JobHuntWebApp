@@ -122,7 +122,7 @@ export default function PrimarySearchAppBar() {
     const token = localStorage.getItem('token')
     const tok = jwt.decode(token)
     const name = tok.info.firstname + "_" + tok.info.lastname
-    const id = tok.info._id
+    const id = tok.user._id
     // console.log(name)
     Router.push(`/applications?nu=${id}`)
   }
@@ -185,7 +185,7 @@ export default function PrimarySearchAppBar() {
   );
 
   const [gettoken, settoken] = React.useState(false)
-  const [app,setApp] = React.useState(0)
+  const [app, setApp] = React.useState(0)
 
   React.useEffect(() => {
     const token = localStorage.getItem('token')
@@ -200,20 +200,27 @@ export default function PrimarySearchAppBar() {
 
     const userid = jwt.decode(token)
 
-    const header = {
-      headers: {
-        'Authorization' : `Bearer ${token}`
+    if (userid != null) {
+
+      const user = userid.user._id
+
+      const header = {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
       }
+
+      Axios.get(apiUrl + `application/${user}/`, header)
+        .then(res => {
+          console.log(res.data.jobApps)
+          setApp(res.data.jobApps)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+        
     }
 
-    Axios.get(apiUrl + `application/${userid}/`, header)
-      .then(res => {
-        console.log(res.data.jobApps)
-        setApp(res.data.jobApps)
-      })
-      .catch(err => {
-        console.log(err)
-      })
   }, 1000)
 
   return (

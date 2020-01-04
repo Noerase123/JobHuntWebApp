@@ -74,7 +74,8 @@ exports.signup = async (req, res, next) => {
                     registerUser.save()
                         .then(response => {
                             res.status(201).json({
-                                message: 'User created'
+                                message: 'User created',
+                                userId: response._id
                             })
                         })
                         .catch(err => {

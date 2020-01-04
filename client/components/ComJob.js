@@ -41,33 +41,39 @@ export default function ComJob() {
 
   const applyNow = (id) => {
     const token = localStorage.getItem('token')
-    const tok = jwt.decode(token)
-    const user = tok.user._id
 
-    Axios.get(apiUrl + `job/${id}/${user}`)
-      .then(res => {
-        console.log(res.data.appliedToJob)
-        setCount(res.data.appliedToJob)
-      })
-      .catch(err => {
-        console.log(err)
-      })
-
-    const header = {
-      headers: {
-        'Authorization': 'Bearer ' + token
-      }
+    if (token === null) {
+      Router.push('/login')
     }
+    else {
+      const tok = jwt.decode(token)
+      const user = tok.user._id
 
-    Axios.post(apiUrl + `application/${user}/${id}`, {}, header)
-      .then(res => {
-        console.log(res.data)
-        alert(res.data.message)
-      })
-      .catch(err => {
-        console.log(err)
-        alert('conflict job user')
-      })
+      Axios.get(apiUrl + `job/${id}/${user}`)
+        .then(res => {
+          console.log(res.data.appliedToJob)
+          setCount(res.data.appliedToJob)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+
+      const header = {
+        headers: {
+          'Authorization': 'Bearer ' + token
+        }
+      }
+
+      Axios.post(apiUrl + `application/${user}/${id}`, {}, header)
+        .then(res => {
+          console.log(res.data)
+          alert(res.data.message)
+        })
+        .catch(err => {
+          console.log(err)
+          alert('conflict job user')
+        })
+    }
   }
 
   return (

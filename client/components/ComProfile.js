@@ -8,6 +8,9 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container'
 import Paper from '@material-ui/core/Paper'
 import Axios from 'axios'
+import Modal from '@material-ui/core/Modal';
+import Backdrop from '@material-ui/core/Backdrop';
+import { useSpring, animated } from 'react-spring/web.cjs';
 const jwt = require('jsonwebtoken')
 
 const useStyles = makeStyles({
@@ -25,16 +28,59 @@ const useStyles = makeStyles({
     editBtns: {
         backgroundColor: '#008B8B',
         color: '#fff'
-    }
+    },
+    modal: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
 });
 
-export default function ComJobDetails() {
+const Fade = React.forwardRef(function Fade(props, ref) {
+    const { in: open, children, onEnter, onExited, ...other } = props;
+    const style = useSpring({
+        from: { opacity: 0 },
+        to: { opacity: open ? 1 : 0 },
+        onStart: () => {
+            if (open && onEnter) {
+                onEnter();
+            }
+        },
+        onRest: () => {
+            if (!open && onExited) {
+                onExited();
+            }
+        },
+    });
+
+    return (
+        <animated.div ref={ref} style={style} {...other}>
+            {children}
+        </animated.div>
+    );
+});
+
+Fade.propTypes = {
+    children: PropTypes.element,
+    in: PropTypes.bool.isRequired,
+    onEnter: PropTypes.func,
+    onExited: PropTypes.func,
+};
+
+export default function ComProfile() {
     const classes = useStyles();
     const bull = <span className={classes.bullet}>•</span>;
     const [basic, setBasic] = React.useState({})
     const [exps, setExps] = React.useState({})
     const [workexp, setWorkexp] = React.useState([])
     const [educ, setEduc] = React.useState([])
+    const [ID, setId] = React.useState({})
+
+    const [open, setOpen] = React.useState(false);
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
     React.useEffect(() => {
 
@@ -58,11 +104,41 @@ export default function ComJobDetails() {
                 setExps(res.data.applicant.expectedSalary)
                 setWorkexp(res.data.applicant.workExp)
                 setEduc(res.data.applicant.education)
+                setId(res.data.applicant.id)
             })
             .catch(err => {
                 console.log(err)
             })
     }, 1000)
+
+    const editBasicInfo = (id) => {
+        console.log(`this is my id bitch ${id}`)
+    }
+
+    const editExpectedSalary = (id) => {
+
+    }
+
+    const editWorkExperience = (id) => {
+
+    }
+
+    const editEducation = (id) => {
+
+    }
+
+    const addExpectedSalary = () => {
+        console.log('addExpectedSalary')
+        setOpen(true);
+    }
+
+    const addWorkExperience = () => {
+
+    }
+
+    const addEducation = () => {
+
+    }
 
     return (
         <div>
@@ -91,14 +167,14 @@ export default function ComJobDetails() {
                                         <Typography className={classes.pos} color="textSecondary">
                                             Gender : {basic.gender}
                                         </Typography>
-                                        <Button variant="contained" className={classes.editBtns}>Edit Basic Info</Button>
+                                        <Button variant="contained" onClick={() => editBasicInfo(ID)} className={classes.editBtns}>Edit Basic Info</Button>
                                     </div>
                                 ) : (
                                     <div>
                                         <p>No Content Available</p>
                                         <Button variant="contained" className={classes.editBtns}> Add Basic Info</Button>
                                     </div>
-                             )}
+                                )}
 
                         </Paper><br />
 
@@ -123,7 +199,7 @@ export default function ComJobDetails() {
                             ) : (
                                     <div>
                                         <p>No Content Available</p>
-                                        <Button variant="contained" className={classes.editBtns}>Add Expected Salary</Button>
+                                        <Button variant="contained" onClick={addExpectedSalary} className={classes.editBtns}>Add Expected Salary</Button>
                                     </div>
                                 )}
                         </Paper><br />
@@ -154,9 +230,10 @@ export default function ComJobDetails() {
                             ) : (
                                     <div>
                                         <p>No Content Available</p>
-                                        <Button variant="contained" className={classes.editBtns}>Add Work Experience</Button>
                                     </div>
                                 )}
+
+                            <Button variant="contained" className={classes.editBtns}>Add Work Experience</Button>
                         </Paper> <br />
 
                         <h3>Education Attainment</h3>
@@ -172,7 +249,7 @@ export default function ComJobDetails() {
                                                 <Typography className={classes.pos}>
                                                     Educational Attained : {edu.educationAttained} <br />
                                                     Course : {edu.course} <br />
-                                                    from year : {edu.fromYear}
+                                                    from year : {edu.fromYear} <br />
                                                     Graduate : {edu.graduated === true ? 'Yes' : 'No'}
                                                 </Typography>
 
@@ -185,12 +262,39 @@ export default function ComJobDetails() {
                             ) : (
                                     <div>
                                         <p>No Content Available</p>
-                                        <Button variant="contained" className={classes.editBtns}>Add Education Attainment</Button>
                                     </div>
                                 )}
 
+                            <Button variant="contained" className={classes.editBtns}>Add Education Attainment</Button>
 
                         </Paper>
+
+
+                        {open ? (
+                            <div>
+                                <Modal
+                                    aria-labelledby="spring-modal-title"
+                                    aria-describedby="spring-modal-description"
+                                    className={classes.modal}
+                                    open={open}
+                                    onClose={handleClose}
+                                    closeAfterTransition
+                                    BackdropComponent={Backdrop}
+                                    BackdropProps={{
+                                        timeout: 500,
+                                    }}
+                                >
+                                    <Fade in={open}>
+                                        <div className={classes.paper}>
+                                            <h2 id="spring-modal-title">Spring modal</h2>
+                                            <p id="spring-modal-description">react-spring animates me.</p>
+                                        </div>
+                                    </Fade>
+                                </Modal>
+                            </div>
+                        ) : (
+                            ''
+                        )}
 
                     </CardContent>
                     <CardActions>

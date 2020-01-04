@@ -88,17 +88,17 @@ exports.viewbyId = async (req, res, next) => {
 exports.addApplicant = async (req, res, next) => {
     const userID = req.params.userID
 
-    const have = await User.findById(userID).countDocuments()
+    const have = await ApplicantModel.find({userId:userID})
 
-    if (have >= 1) {
+    console.log(have.length)
+
+    if (have.length > 0) {
         res.status(409).json({
             message: "sorry your request is conflict"
         })
     } else {
 
         const email = await User.findById(userID)
-
-        console.log(email.username)
 
         const appli = new ApplicantModel({
             userId: userID,
@@ -111,15 +111,17 @@ exports.addApplicant = async (req, res, next) => {
             gender: req.body.gender
         })
 
-        await appli.save()
-        try {
-            res.status(201).json({
-                message: 'Applicant added'
+        appli.save()
+            .then(response => {
+                res.status(201).json({
+                    message: 'applicant added',
+                    applicant_id: response._id
+                })
             })
-        } catch (err) {
-            res.status(500).json(err)
-            console.log(err)
-        }
+            .catch(err => {
+                res.status(500).json(err)
+                console.log(err)
+            })
     }
 }
 

@@ -26,20 +26,16 @@ export default function ComJob() {
   React.useEffect(() => {
 
     const params = new URLSearchParams(window.location.search)
-
     const userid = params.get('nu')
-
     const token = localStorage.getItem('token')
-
     const header = {
       headers: {
         'Authorization': `Bearer ${token}`
       }
     }
-
     Axios.get(apiUrl + `application/${userid}/`, header)
       .then(res => {
-        console.log(res.data.jobApps)
+        console.log(res.data)
         setJob(res.data.jobApps)
       })
       .catch(err => {
@@ -103,7 +99,7 @@ export default function ComJob() {
         </Container>
       ) : (
           <div>
-            <h3 style={{padding: '20px'}}>No Application for the moment</h3>
+            <h3 style={{ padding: '20px' }}>No Application for the moment</h3>
           </div>
         )}
 

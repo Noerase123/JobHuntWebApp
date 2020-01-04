@@ -89,21 +89,10 @@ function getStepContent(step) {
 export default function SignupForm() {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
+  const [hidbtn, sethidbtn] = React.useState('none')
 
   const handleNext = () => {
-    setActiveStep(activeStep + 1);
-    
-    if (activeStep === 0) {
-      console.log('login done')
-    } else if (activeStep === 1) {
-      console.log('applicant done')
-    } else if (activeStep === 2) {
-      console.log('expected salary done')
-    } else if (activeStep === 3) {
-      console.log('work experience done')
-    } else if (activeStep === 4) {
-      console.log('education done')
-    }
+    setActiveStep(activeStep + 1)
   };
 
   const handleBack = () => {
@@ -169,16 +158,31 @@ export default function SignupForm() {
 
                       </div>
                     ) : (
-                        <div>
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={handleNext}
-                            className={classes.button}
-                          >
-                            Next
+                        activeStep <= 1 ? (
+
+                          <div>
+                            <Button
+                              variant="contained"
+                              color="primary"
+                              onClick={handleNext}
+                              className={classes.button}
+                            >
+                              Next
                           </Button>
-                        </div>
+                          </div>
+                        ) : (
+
+                            <div>
+                              <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={handleNext}
+                                className={classes.button}
+                              >
+                                Skip
+                          </Button>
+                            </div>
+                          )
                       )}
 
                   </div>

@@ -28,11 +28,11 @@ export default function ComSearch() {
     const apiUrlef = apiUrl + 'job/search'
 
     const query = new URLSearchParams(window.location.search)
-    
+
     const search = query.get('q')
 
-    Axios.get(apiUrlef+ `?term=${search}`)
-      .then(res =>{
+    Axios.get(apiUrlef + `?term=${search}`)
+      .then(res => {
         console.log(res.data)
         setJob(res.data)
       })
@@ -48,33 +48,41 @@ export default function ComSearch() {
 
   const applyNow = (id) => {
     const token = localStorage.getItem('token')
-    const tok = jwt.decode(token)
-    const user = tok.user._id
 
-    Axios.get(apiUrl + `application/job/${id}`)
-      .then(res => {
-        console.log(res.data)
-        setCount(true)
-      })
-      .catch(err => {
-        console.log(err)
-      })
-
-    const header = {
-      headers: {
-        'Authorization': 'Bearer ' + token
-      }
+    if (token === null) {
+      Router.push('/login')
     }
+    else {
 
-    Axios.post(apiUrl + `application/${user}/${id}`, {}, header)
-      .then(res => {
-        console.log(res.data)
-        alert(res.data.message)
-      })
-      .catch(err => {
-        console.log(err)
-        alert('conflict job user')
-      })
+      const tok = jwt.decode(token)
+      const user = tok.user._id
+
+      Axios.get(apiUrl + `application/job/${id}`)
+        .then(res => {
+          console.log(res.data)
+          setCount(true)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+
+      const header = {
+        headers: {
+          'Authorization': 'Bearer ' + token
+        }
+      }
+
+
+      Axios.post(apiUrl + `application/${user}/${id}`, {}, header)
+        .then(res => {
+          console.log(res.data)
+          alert(res.data.message)
+        })
+        .catch(err => {
+          console.log(err)
+          alert('conflict job user')
+        })
+    }
   }
 
   return (
