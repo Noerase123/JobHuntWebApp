@@ -49,7 +49,7 @@ exports.updateJobInfo = async (req, res, next) => {
     const id = req.params.jobid
     const updateOps = {}
     for (const ops of req.body) {
-        updateOps[ops.propName] = ops.value
+        updateOps[ops.key] = ops.value
     }
     await JobInfoModel.update({ jobId: id }, { $set: updateOps })
     try {

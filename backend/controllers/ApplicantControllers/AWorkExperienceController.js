@@ -16,6 +16,13 @@ exports.viewAll = async (req, res, next) => {
 exports.viewbyId = async (req, res, next) => {
     const id = req.params.id
     const getbyid = await AWorkExperienceModel.findById(id)
+
+    if (getbyId === null) {
+        res.status(404).json({
+            message: `${id} is not found`
+        })
+    }
+    
     try {
         res.status(200).json(getbyid)
     } catch (err) {

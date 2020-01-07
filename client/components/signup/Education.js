@@ -83,6 +83,8 @@ export default function Education() {
         setDisbtn(true)
         localStorage.removeItem('applicant_id')
         localStorage.removeItem('user_id')
+        localStorage.removeItem('login')
+        localStorage.removeItem('applicant')
         alert('success')
       })
       .catch(err => {

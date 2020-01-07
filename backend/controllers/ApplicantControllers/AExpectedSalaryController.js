@@ -74,7 +74,7 @@ exports.updateSalary = async (req, res, next) => {
     const id = req.params.applicantID
     const updateOps = {}
     for (const ops of req.body) {
-        updateOps[ops.propName] = ops.value
+        updateOps[ops.key] = ops.value
     }
     await ExpectedSalary.update({ _id: id }, { $set: updateOps })
     try {

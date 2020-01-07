@@ -115,7 +115,6 @@ export default function EmpInfo() {
       "lastname" : last,
       "location" : location,
       "contactNo" : _code + number,
-      "email" : email,
       "birthday" : `${_month}/${_date}/${_year}`,
       "gender" : _gender
     }

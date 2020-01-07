@@ -118,3 +118,17 @@ exports.getOne = async (req, res, next) => {
         console.log(err)
     }
 }
+
+exports.deleteOne = async (req,res,next) => {
+    const id = req.params.id
+
+    const data = await User.findByIdAndDelete(id)
+
+    try {
+        res.status(200).json({
+            message: 'User deleted'
+        })
+    } catch (err) {
+        res.status(500).json(err)
+    }
+}

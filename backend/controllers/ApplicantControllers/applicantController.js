@@ -10,11 +10,17 @@ let apiUrl = 'http://localhost:3030/api/applicant/emp/'
 exports.viewEmployee = async (req, res, next) => {
     const id = req.params.applicantID
 
-    const app = await ApplicantModel.findById(id, { __v: 0 })
-    const exp = await AES.findOne({ applicantId: id }, { _id: 0, __v: 0, applicantId: 0 })
-    const work = await AWE.find({ applicantId: id }, { _id: 0, __v: 0, applicantId: 0 })
-    const educ = await AE.find({ applicantId: id }, { _id: 0, __v: 0, applicantId: 0 })
 
+    const app = await ApplicantModel.findById(id, { __v: 0 })
+    const exp = await AES.findOne({ applicantId: id }, {__v: 0, applicantId: 0 })
+    const work = await AWE.find({ applicantId: id }, {__v: 0, applicantId: 0 })
+    const educ = await AE.find({ applicantId: id }, {__v: 0, applicantId: 0 })
+
+    if (app === null || exp === null || work === null || educ === null) {
+        res.status(404).json({
+            message: `${id} is not found`
+        })
+    }
 
     const person = {
         firstname: app.firstname,
@@ -75,7 +81,13 @@ exports.viewAll = async (req, res, next) => {
 
 exports.viewbyId = async (req, res, next) => {
     const id = req.params.id
-    const getbyId = await ApplicantModel.find({ userId: id })
+    const getbyId = await ApplicantModel.findById(id)
+
+    if (getbyId === null) {
+        res.status(404).json({
+            message: `${id} is not found`
+        })
+    }
 
     try {
         res.status(200).json(getbyId)
@@ -127,9 +139,15 @@ exports.addApplicant = async (req, res, next) => {
 
 exports.updateApplicant = async (req, res, next) => {
     const id = req.params.id
+
+    if (id === null) {
+        res.status(404).json({
+            message: `${id} is not found`
+        })
+    }
     const updateOps = {}
     for (const ops of req.body) {
-        updateOps[ops.propName] = ops.value
+        updateOps[ops.key] = ops.value
     }
     await ApplicantModel.update({ _id: id }, { $set: updateOps })
     try {
@@ -144,7 +162,7 @@ exports.updateApplicant = async (req, res, next) => {
 
 exports.deleteApplicant = async (req, res, next) => {
     const id = req.params.id
-    await ApplicantModel.deleteOne({ _id: id })
+    const deletee = await ApplicantModel.deleteOne({ _id: id })
     try {
         res.status(200).json({
             message: `(${id}) applicant deleted`

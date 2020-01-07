@@ -7,7 +7,7 @@ const applicantSchema = new Schema({
     lastname: {type: String, required: true},
     location: {type: String, required: true},
     contactNo: {type: Number, required: true},
-    email: {type: String},
+    email: {type: String, required: true},
     birthday: {type: Date, required: true},
     gender: {type: String, required: true}
 })
