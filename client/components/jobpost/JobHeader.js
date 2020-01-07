@@ -79,20 +79,20 @@ export default function JobHeader() {
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
-        Work Experience
+        What Job position are you seeking for?
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12}>
-          <TextField required id="jobTitle" label="Job Title" fullWidth onChange={event => setJobTitle(event.target.value)} />
+          <TextField variant="outlined" required id="jobTitle" label="Job Title" fullWidth onChange={event => setJobTitle(event.target.value)} />
         </Grid>
         <Grid item xs={12}>
-          <TextField required id="company" label="Company" fullWidth onChange={event => setCompany(event.target.value)} />
+          <TextField variant="outlined"  required id="company" label="Company" fullWidth onChange={event => setCompany(event.target.value)} />
         </Grid>
         <Grid item xs={12}>
-          <TextField required id="location" label="Location" fullWidth onChange={event => setLocation(event.target.value)} />
+          <TextField variant="outlined"  required id="location" label="Location" fullWidth onChange={event => setLocation(event.target.value)} />
         </Grid>
         <Grid item xs={12} md={6}>
-          <TextField required id="salary" label="Salary" type="number" fullWidth onChange={event => setSalary(event.target.value)} />
+          <TextField variant="outlined"  required id="salary" label="Salary" type="number" fullWidth onChange={event => setSalary(event.target.value)} />
         </Grid>
         <Grid item xs={12}>
           <FormGroup row>

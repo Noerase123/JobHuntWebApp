@@ -85,11 +85,11 @@ export default function JobSummary() {
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
-        Expected Salary
+        Let us know what type of business of requirements to meet your future employees.
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
-          <FormControl className={classes.formControl}>
+          <FormControl  variant="outlined" className={classes.formControl}>
             <InputLabel id="demo-controlled-open-select-label">Job Level</InputLabel>
             <Select
               labelId="demo-controlled-open-select-label"
@@ -111,16 +111,16 @@ export default function JobSummary() {
           </FormControl>
         </Grid>
         <Grid item xs={12} md={6}>
-          <TextField required id="industry" label="Industry" fullWidth onChange={event => setIndustry(event.target.value)} />
+          <TextField variant="outlined"  required id="industry" label="Industry" fullWidth onChange={event => setIndustry(event.target.value)} />
         </Grid>
         <Grid item xs={12} md={6}>
-          <TextField required id="jobCategory" label="Job Category" fullWidth onChange={event => setJobCategory(event.target.value)} />
+          <TextField variant="outlined"  required id="jobCategory" label="Job Category" fullWidth onChange={event => setJobCategory(event.target.value)} />
         </Grid>
         <Grid item xs={12} md={6}>
-          <TextField required id="vacancy" label="Vacancy" type="number" fullWidth onChange={event => setVacancy(event.target.value)} />
+          <TextField variant="outlined"  required id="vacancy" label="Vacancy" type="number" fullWidth onChange={event => setVacancy(event.target.value)} />
         </Grid>
         <Grid item xs={12} md={6}>
-          <FormControl className={classes.formControl}>
+          <FormControl variant="outlined"  className={classes.formControl}>
             <InputLabel id="demo-controlled-open-select-label">Education</InputLabel>
             <Select
               labelId="demo-controlled-open-select-label"
@@ -141,10 +141,10 @@ export default function JobSummary() {
           </FormControl>
         </Grid>
         <Grid item xs={12} md={6}>
-          <TextField required id="website" label="Website" fullWidth onChange={event => setWebsite(event.target.value)} />
+          <TextField variant="outlined"  required id="website" label="Website" fullWidth onChange={event => setWebsite(event.target.value)} />
         </Grid>
         <Grid item xs={12} md={6}>
-          <TextField required id="officeAddress" label="Office Address" fullWidth onChange={event => setOfficeAddress(event.target.value)} />
+          <TextField variant="outlined"  required id="officeAddress" label="Office Address" fullWidth onChange={event => setOfficeAddress(event.target.value)} />
         </Grid>
 
         <Grid item xs={12}>

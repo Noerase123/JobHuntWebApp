@@ -146,7 +146,7 @@ export default function ComJobPost() {
                     )}
                     {activeStep === steps.length - 1 ? (
                       <div>
-                        <Link href="/login">
+                        <Link href="/jobs">
                           <Button
                             variant="contained"
                             color="primary"
@@ -158,31 +158,17 @@ export default function ComJobPost() {
 
                       </div>
                     ) : (
-                        activeStep <= 1 ? (
-
-                          <div>
-                            <Button
-                              variant="contained"
-                              color="primary"
-                              onClick={handleNext}
-                              className={classes.button}
-                            >
-                              Next
+                        <div>
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={handleNext}
+                            className={classes.button}
+                          >
+                            Next
                           </Button>
-                          </div>
-                        ) : (
+                        </div>
 
-                            <div>
-                              <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={handleNext}
-                                className={classes.button}
-                              >
-                                Skip
-                          </Button>
-                            </div>
-                          )
                       )}
 
                   </div>

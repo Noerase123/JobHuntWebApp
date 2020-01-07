@@ -66,11 +66,12 @@ export default function JobInfo() {
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
-        Work Experience
+        Tell us about your Job Description and Job Qualification.
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <TextField
+           variant="outlined" 
             required
             id="jobDescription"
             label="Job Description"
@@ -82,6 +83,7 @@ export default function JobInfo() {
         </Grid>
         <Grid item xs={12}>
           <TextField
+           variant="outlined" 
             required
             id="qualification"
             label="Job Qualification"

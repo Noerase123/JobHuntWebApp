@@ -66,11 +66,12 @@ export default function AboutCompany() {
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
-        Work Experience
+        Tell us something about your Company.
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <TextField
+           variant="outlined" 
             required
             id="overview"
             label="Overview of the Company"
@@ -82,6 +83,7 @@ export default function AboutCompany() {
         </Grid>
         <Grid item xs={12}>
           <TextField
+           variant="outlined" 
             required
             id="yearStarted"
             label="Year Started"

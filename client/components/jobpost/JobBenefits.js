@@ -85,7 +85,7 @@ export default function JobBenefits() {
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
-        Work Experience
+        What benefits are available at your Job Post?
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12}>
