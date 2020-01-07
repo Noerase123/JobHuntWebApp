@@ -16,8 +16,8 @@ exports.viewAll = async (req, res, next) => {
 }
 
 exports.viewByJobID = async (req, res, next) => {
-    const jobid = req.params.jobid
-    const getJobid = await JobSummaryModel.findOne({ jobId: jobid })
+    const jobid = req.params.id
+    const getJobid = await JobSummaryModel.findById(jobid)
 
     try {
         res.status(200).json(getJobid)
@@ -58,7 +58,7 @@ exports.updateJobSummary = async (req, res, next) => {
     for (const ops of req.body) {
         updateOps[ops.key] = ops.value
     }
-    await JobSummaryModel.update({ jobId: id }, { $set: updateOps })
+    await JobSummaryModel.update({ _id: id }, { $set: updateOps })
     try {
         res.status(200).json({
             message: 'Job Summary updated'
@@ -70,8 +70,8 @@ exports.updateJobSummary = async (req, res, next) => {
 }
 
 exports.deleteJobSummary = async (req, res, next) => {
-    const id = req.params.jobid
-    await JobSummaryModel.deleteOne({ jobId: id })
+    const id = req.params.id
+    await JobSummaryModel.findByIdAndDelete(id)
     try {
         res.status(200).json({
             message: `(${id}) Job Summary deleted`

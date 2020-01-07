@@ -4,9 +4,9 @@ const jobSummaryController = require('../../controllers/JobControllers/JobSummar
 
 /* GET users listing. */
 router.get('/', jobSummaryController.viewAll);
-router.get('/:jobid', jobSummaryController.viewByJobID);
+router.get('/:id', jobSummaryController.viewByJobID);
 router.post('/:jobid', jobSummaryController.addJobSummary);
-router.patch('/:jobid', jobSummaryController.updateJobSummary);
-router.delete('/:jobid', jobSummaryController.deleteJobSummary);
+router.patch('/:id', jobSummaryController.updateJobSummary);
+router.delete('/:id', jobSummaryController.deleteJobSummary);
 
 module.exports = router;

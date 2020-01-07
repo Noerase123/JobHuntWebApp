@@ -218,7 +218,7 @@ export default function PrimarySearchAppBar() {
         .catch(err => {
           console.log(err)
         })
-        
+
     }
 
   }, 1000)
@@ -250,7 +250,13 @@ export default function PrimarySearchAppBar() {
 
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-
+            {gettoken === true ? (
+              ''
+            ) : (
+              <Link href="/jobcompose">
+                <Button color="inherit">Hired One?</Button>
+              </Link>
+            )}
             <Link href="/jobs">
               <Button color="inherit">Jobs</Button>
             </Link>
