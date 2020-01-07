@@ -49,29 +49,26 @@ export default function JobHeader() {
 
   const [jobTitle, setJobTitle] = React.useState('')
   const [company, setCompany] = React.useState('')
-  const [address, setAddress] = React.useState('')
-  const [from, setFrom] = React.useState(0)
-  const [to, setTo] = React.useState(0)
-  const [current, setCurrent] = React.useState(false)
+  const [location, setLocation] = React.useState('')
+  const [salary, setSalary] = React.useState(0)
+  const [fullTime, setFulltime] = React.useState(false)
   const [disbtn, setDisbtn] = React.useState(false)
 
-  const addWork = () => {
+  const addJobHeader = () => {
     const apiUrl = 'http://localhost:3030/api/'
-
-    const id = localStorage.getItem('applicant_id')
 
     const payload = {
       "jobTitle" : jobTitle,
       "company" : company,
-      "address" : address,
-      "from" : from,
-      "to" : to,
-      "current" : current
+      "location" : location,
+      "salary" : salary,
+      "fullTime" : fullTime
     }
 
-    Axios.post(apiUrl + `workExperience/${id}`, payload)
+    Axios.post(apiUrl + `job/`, payload)
         .then(res => {
-          console.log(res.data)
+          console.log(res.data.jobID)
+          localStorage.setItem('jobID', res.data.jobID)
           setDisbtn(true)
         })
         .catch(err => {
@@ -92,27 +89,24 @@ export default function JobHeader() {
           <TextField required id="company" label="Company" fullWidth onChange={event => setCompany(event.target.value)} />
         </Grid>
         <Grid item xs={12}>
-          <TextField required id="companyAdd" label="Address" fullWidth onChange={event => setAddress(event.target.value)} />
+          <TextField required id="location" label="Location" fullWidth onChange={event => setLocation(event.target.value)} />
         </Grid>
         <Grid item xs={12} md={6}>
-          <TextField required id="from" label="From" type="date" fullWidth onChange={event => setFrom(event.target.value)} />
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <TextField required id="to" label="To" type="date" fullWidth onChange={event => setTo(event.target.value)} />
+          <TextField required id="salary" label="Salary" type="number" fullWidth onChange={event => setSalary(event.target.value)} />
         </Grid>
         <Grid item xs={12}>
           <FormGroup row>
             <FormControlLabel
               control={
                 <Switch
-                  checked={current}
+                  checked={fullTime}
                   // onChange={handleChange('checkedB')}
                   // value="checkedB"
                   color="primary"
-                  onChange={event => setCurrent(event.target.checked)}
+                  onChange={event => setFulltime(event.target.checked)}
                 />
               }
-              label="Employed?"
+              label="Full-time"
             />
           </FormGroup>
         </Grid>
@@ -122,7 +116,7 @@ export default function JobHeader() {
             variant="contained"
             color="primary"
             fullWidth
-            onClick={addWork}
+            onClick={addJobHeader}
             disabled={disbtn}
           >
             Save

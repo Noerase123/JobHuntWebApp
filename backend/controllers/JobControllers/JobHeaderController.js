@@ -142,7 +142,7 @@ exports.viewAll = async (req, res, next) => {
 
 }
 
-exports.addJobHeader = async (req, res, next) => {
+exports.addJobHeader = (req, res, next) => {
     const appli = new JobHeaderModel({
         jobTitle: req.body.jobTitle,
         company: req.body.company,
@@ -150,16 +150,17 @@ exports.addJobHeader = async (req, res, next) => {
         salary: req.body.salary,
         fullTime: req.body.fullTime
     })
-
-    await appli.save()
-    try {
-        res.status(201).json({
-            message: 'Job added'
+    appli.save()
+        .then(response => {
+            res.status(201).json({
+                message: 'Job Added',
+                jobID : response._id
+            })
         })
-    } catch (err) {
-        res.status(500).json(err)
-        console.log(err)
-    }
+        .catch(err => {
+            res.status(500).json(err)
+            console.log(err)
+        })
 }
 
 exports.updateJobHeader = async (req, res, next) => {

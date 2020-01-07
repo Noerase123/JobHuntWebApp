@@ -47,29 +47,32 @@ export default function JobBenefits() {
     setState({ ...state, [name]: event.target.checked });
   };
 
-  const [jobTitle, setJobTitle] = React.useState('')
-  const [company, setCompany] = React.useState('')
-  const [address, setAddress] = React.useState('')
-  const [from, setFrom] = React.useState(0)
-  const [to, setTo] = React.useState(0)
-  const [current, setCurrent] = React.useState(false)
+  const [flexitime, setFlexitime] = React.useState(false)
+  const [paidHolidays, setPaidHolidays] = React.useState(false)
+  const [paidSickLeave, setPaidSickLeave] = React.useState(false)
+  const [workFromHome, setWorkFromHome] = React.useState(false)
+  const [paidVacationLeave, setPaidVacationLeave] = React.useState(false)
+  const [medicalInsurance, setMedicalInsurance] = React.useState(false)
+  const [freeLunch, setFreeLunch] = React.useState(false)
   const [disbtn, setDisbtn] = React.useState(false)
 
-  const addWork = () => {
+  const addBenefits = () => {
     const apiUrl = 'http://localhost:3030/api/'
 
-    const id = localStorage.getItem('applicant_id')
+    const id = localStorage.getItem('jobID')
 
     const payload = {
-      "jobTitle" : jobTitle,
-      "company" : company,
-      "address" : address,
-      "from" : from,
-      "to" : to,
-      "current" : current
+      "flexitime" : flexitime,
+      "paidHolidays" : paidHolidays,
+      "paidSickLeave" : paidSickLeave,
+      "workFromHome" : workFromHome,
+      "paidVacationLeave" : paidVacationLeave,
+      "medicalInsurance" : medicalInsurance,
+      "freeLunch" : freeLunch,
+      
     }
 
-    Axios.post(apiUrl + `workExperience/${id}`, payload)
+    Axios.post(apiUrl + `jobBenefits/${id}`, payload)
         .then(res => {
           console.log(res.data)
           setDisbtn(true)
@@ -86,33 +89,114 @@ export default function JobBenefits() {
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12}>
-          <TextField required id="jobTitle" label="Job Title" fullWidth onChange={event => setJobTitle(event.target.value)} />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField required id="company" label="Company" fullWidth onChange={event => setCompany(event.target.value)} />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField required id="companyAdd" label="Address" fullWidth onChange={event => setAddress(event.target.value)} />
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <TextField required id="from" label="From" type="date" fullWidth onChange={event => setFrom(event.target.value)} />
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <TextField required id="to" label="To" type="date" fullWidth onChange={event => setTo(event.target.value)} />
+          <FormGroup row>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={flexitime}
+                  // onChange={handleChange('checkedB')}
+                  // value="checkedB"
+                  color="primary"
+                  onChange={event => setFlexitime(event.target.checked)}
+                />
+              }
+              label="Flexi Time"
+            />
+          </FormGroup>
         </Grid>
         <Grid item xs={12}>
           <FormGroup row>
             <FormControlLabel
               control={
                 <Switch
-                  checked={current}
+                  checked={paidHolidays}
                   // onChange={handleChange('checkedB')}
                   // value="checkedB"
                   color="primary"
-                  onChange={event => setCurrent(event.target.checked)}
+                  onChange={event => setPaidHolidays(event.target.checked)}
                 />
               }
-              label="Employed?"
+              label="Paid Holiday"
+            />
+          </FormGroup>
+        </Grid>
+        <Grid item xs={12}>
+          <FormGroup row>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={paidSickLeave}
+                  // onChange={handleChange('checkedB')}
+                  // value="checkedB"
+                  color="primary"
+                  onChange={event => setPaidSickLeave(event.target.checked)}
+                />
+              }
+              label="Paid Sick Leave"
+            />
+          </FormGroup>
+        </Grid>
+        <Grid item xs={12}>
+          <FormGroup row>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={workFromHome}
+                  // onChange={handleChange('checkedB')}
+                  // value="checkedB"
+                  color="primary"
+                  onChange={event => setWorkFromHome(event.target.checked)}
+                />
+              }
+              label="Work from home"
+            />
+          </FormGroup>
+        </Grid>
+        <Grid item xs={12}>
+          <FormGroup row>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={paidVacationLeave}
+                  // onChange={handleChange('checkedB')}
+                  // value="checkedB"
+                  color="primary"
+                  onChange={event => setPaidVacationLeave(event.target.checked)}
+                />
+              }
+              label="Paid Vacation Leave"
+            />
+          </FormGroup>
+        </Grid>
+        <Grid item xs={12}>
+          <FormGroup row>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={medicalInsurance}
+                  // onChange={handleChange('checkedB')}
+                  // value="checkedB"
+                  color="primary"
+                  onChange={event => setMedicalInsurance(event.target.checked)}
+                />
+              }
+              label="Medical Insurance"
+            />
+          </FormGroup>
+        </Grid>
+        <Grid item xs={12}>
+          <FormGroup row>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={freeLunch}
+                  // onChange={handleChange('checkedB')}
+                  // value="checkedB"
+                  color="primary"
+                  onChange={event => setFreeLunch(event.target.checked)}
+                />
+              }
+              label="Free Lunch"
             />
           </FormGroup>
         </Grid>
@@ -122,7 +206,7 @@ export default function JobBenefits() {
             variant="contained"
             color="primary"
             fullWidth
-            onClick={addWork}
+            onClick={addBenefits}
             disabled={disbtn}
           >
             Save
